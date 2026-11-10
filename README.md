@@ -2,6 +2,13 @@
 
 The English product website for [RustWTM](https://rustwtm.com), built with Next.js and TypeScript and exported to static files for GitHub Pages.
 
+The homepage also links to `/preview/`, an original interactive concept tour.
+Its device charts, package selections, recorded moment and rule matches use
+simulated data. In-development features are marked explicitly. Runtime sources
+live in `public/preview/` and mirror the product repository's `website/` files.
+No installer, system access, analytics or account is involved in the tour.
+Model and static-export checks run in the normal Node suite.
+
 ## Local development
 
 Use Node **26.13.0** and npm **12.2.2**, matching `.nvmrc`, `package.json` and CI.

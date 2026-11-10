@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RustWTM — Know what your PC is doing</title>
+    <meta
+      name="description"
+      content="An open-source Windows task manager with resource protection, device insights and application management. Explore the interactive product preview."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="canonical" href="https://rustwtm.com/preview/" />
+    <meta property="og:title" content="RustWTM — Interactive product preview" />
+    <meta property="og:image" content="https://rustwtm.com/og.png" />
+    <script type="module" src="demo.js"></script>
+  </head>
+  <body>
+    <header class="site-nav">
+      <a class="wordmark" href="https://rustwtm.com"
+        ><span class="mark" aria-hidden="true">↗</span>RustWTM</a
+      >
+      <nav aria-label="Main">
+        <a href="#explore">Explore</a
+        ><a href="https://github.com/rustwtm/rustwtm#readme">Documentation</a
+        ><button id="theme" aria-label="Switch color theme">Light mode</button
+        ><a class="button download" href="https://github.com/rustwtm/rustwtm/releases/latest"
+          >Download for Windows ↗</a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div>
+          <p class="eyebrow"><span class="live-dot"></span> WINDOWS, WITH A CLEARER VIEW</p>
+          <h1>Your PC.<br />Your perspective.</h1>
+          <p class="lead">
+            See what matters. Understand your hardware, follow resource usage and keep important
+            work responsive.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://github.com/rustwtm/rustwtm/releases/latest"
+              >Get RustWTM <span aria-hidden="true">↗</span></a
+            ><a class="button" href="#explore">Try the interactive preview ↓</a>
+          </div>
+          <p class="small muted">Open source · MIT licensed · Built with Rust</p>
+        </div>
+        <aside class="hero-note">
+          <span class="note-index">01 / PERSPECTIVE</span>
+          <div class="pulse-art" aria-hidden="true">
+            <svg viewBox="0 0 300 160">
+              <path
+                d="M0 120H48L62 90L76 124L104 44L125 137L149 94H171L190 68L212 108L233 82L253 100H300"
+              />
+            </svg>
+          </div>
+          <h2>A little more<br />understanding.</h2>
+          <p class="muted">
+            From a busy process to the device behind it. A focused workspace for the details you
+            actually need.
+          </p>
+        </aside>
+      </section>
+      <section id="explore" class="explore">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EXPLORE THE WORKSPACE</p>
+            <h2>Details, without the noise.</h2>
+          </div>
+          <p class="muted preview-label">
+            Interactive concept preview · Simulated data<br />Some features are in development.
+          </p>
+        </div>
+        <div class="workspace">
+          <aside class="demo-nav">
+            <span class="demo-brand">R / WORKSPACE</span>
+            <div role="tablist" aria-label="Product workspaces" aria-orientation="vertical">
+              <button
+                role="tab"
+                id="tab-devices"
+                aria-controls="panel"
+                aria-selected="true"
+                data-page="devices"
+              >
+                Devices <span>01</span></button
+              ><button
+                role="tab"
+                id="tab-apps"
+                aria-controls="panel"
+                aria-selected="false"
+                tabindex="-1"
+                data-page="apps"
+              >
+                Applications <span>02</span></button
+              ><button
+                role="tab"
+                id="tab-history"
+                aria-controls="panel"
+                aria-selected="false"
+                tabindex="-1"
+                data-page="history"
+              >
+                Activity <span>03</span></button
+              ><button
+                role="tab"
+                id="tab-rules"
+                aria-controls="panel"
+                aria-selected="false"
+                tabindex="-1"
+                data-page="rules"
+              >
+                Protection <span>04</span>
+              </button>
+            </div>
+            <p class="small muted">
+              Everything here stays in your browser. No system access, installers or changes.
+            </p>
+            <button class="text-button" id="pause">Pause animation</button>
+          </aside>
+          <section id="panel" role="tabpanel" aria-labelledby="tab-devices" tabindex="0">
+            <div class="demo-heading">
+              <div>
+                <p class="eyebrow" id="page-kicker">DEVICE INSIGHTS</p>
+                <h3 id="page-title">A closer look at your hardware.</h3>
+              </div>
+              <span class="status"><span class="live-dot"></span>Simulated</span>
+            </div>
+            <div id="content"></div>
+          </section>
+          <div class="demo-status">
+            <span>PRODUCT PREVIEW</span
+            ><span id="status" role="status" aria-live="polite"
+              >Choose a workspace to explore.</span
+            >
+          </div>
+        </div>
+      </section>
+      <section class="principles">
+        <article>
+          <span class="index">01</span>
+          <h3>Clarity comes first.</h3>
+          <p class="muted">
+            Consistent spacing, purposeful controls and resource colors that help you follow a
+            reading across the workspace.
+          </p>
+        </article>
+        <article>
+          <span class="index">02</span>
+          <h3>Changes stay deliberate.</h3>
+          <p class="muted">
+            Review package identities and policy changes. Preview rule matches before deciding what
+            to apply.
+          </p>
+        </article>
+        <article>
+          <span class="index">03</span>
+          <h3>Honest about the gaps.</h3>
+          <p class="muted">
+            Unavailable sensors stay unavailable. History shows observed activity, without inventing
+            a cause.
+          </p>
+        </article>
+      </section>
+      <section class="closing">
+        <p class="eyebrow">MAKE ROOM FOR WHAT MATTERS</p>
+        <h2>Put your system<br />in perspective.</h2>
+        <a class="button primary" href="https://github.com/rustwtm/rustwtm/releases/latest"
+          >Explore the latest release ↗</a
+        >
+        <p class="small muted">Read the release notes for currently available features.</p>
+      </section>
+    </main>
+    <footer>
+      <a class="wordmark" href="https://rustwtm.com">RustWTM</a>
+      <p>
+        A project of <a href="https://oxog.net">oxog.net</a>.<br />Maintained by OXOGNET OÜ,
+        Estonia. MIT licensed.
+      </p>
+      <a href="https://github.com/rustwtm/rustwtm">Source on GitHub ↗</a>
+    </footer>
+    <dialog id="review">
+      <form method="dialog">
+        <p class="eyebrow">SIMULATION ONLY</p>
+        <h2>Review your selection.</h2>
+        <p id="review-detail"></p>
+        <p class="muted">
+          This preview never starts an installer or changes a policy on your computer.
+        </p>
+        <div class="hero-actions">
+          <button value="cancel">Close</button
+          ><button value="confirm" class="primary">Confirm simulation</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
