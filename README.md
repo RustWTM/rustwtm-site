@@ -36,6 +36,8 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 
 ## Update product links after a repository move
 
+The product repository is now [`RustWTM/RustWTM`](https://github.com/RustWTM/RustWTM). The committed release snapshot was refreshed to v0.28.0 after verifying its MSI, portable ZIP and checksum assets on 10 November 2026. Gallery captions continue to identify the actual UI version in each existing capture.
+
 Change `repository` in `config/product.json` only after the new repository serves the product and releases. Run `npm run refresh:release`, inspect the resulting metadata, then build and check. `targetRepository` is informational and is not used for public product links. This website does not move the product repository.
 
 ## Refresh media

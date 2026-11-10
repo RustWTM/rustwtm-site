@@ -4,6 +4,8 @@ Reviewed on 2026-11-10. Product source commit: `d15371c1d9a6a5134f18ba274d6d4ed2
 
 ## Repository and release identity
 
+**Migration update, 2026-11-10:** the product has moved to [`RustWTM/RustWTM`](https://github.com/RustWTM/RustWTM), and the official latest stable release is [v0.28.0](https://github.com/RustWTM/RustWTM/releases/tag/v0.28.0). Public website source, documentation, issue, installation and download links now derive from this canonical repository. Earlier observations below describe the initial delivery before the transfer.
+
 - `https://github.com/rustwtm/rustwtm` returned 404 at review time. It is the intended future product address, not a working public source.
 - `https://github.com/ersinkoc/RustWTM` serves the current source and releases.
 - Official latest stable release: [v0.27.2](https://github.com/ersinkoc/RustWTM/releases/tag/v0.27.2), published 2026-11-10 at 12:52:06 UTC. API returned neither draft nor prerelease.

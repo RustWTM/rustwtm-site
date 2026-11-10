@@ -1,7 +1,7 @@
 {
   "name": "RustWTM",
   "domain": "https://rustwtm.com",
-  "repository": "ersinkoc/RustWTM",
+  "repository": "RustWTM/RustWTM",
   "targetRepository": "rustwtm/rustwtm",
   "websiteRepository": "rustwtm/rustwtm-site",
   "branch": "main"
