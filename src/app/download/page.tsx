@@ -3,7 +3,7 @@ import Link from "next/link";
 import { DownloadOptions } from "@/components/download-options";
 import { CopyCode } from "@/components/copy-code";
 import { Icon } from "@/components/icons";
-import { docs, installCommand, links, release } from "@/lib/product";
+import { docs, installCommand, links, release, releaseNotesHref } from "@/lib/product";
 export const metadata = pageMetadata(
   "Download for Windows",
   "Download the latest stable RustWTM x64 MSI installer or portable ZIP. Windows requirements, installation instructions and a careful first-run guide.",
@@ -40,7 +40,7 @@ export default function Download() {
       </div>
       <DownloadOptions />
       <div className="download-links">
-        <a href={release.url}>
+        <a href={releaseNotesHref}>
           What’s new <Icon name="external" size={13} />
         </a>
         <a href={links.releases}>
@@ -103,10 +103,7 @@ export default function Download() {
             the script before running it.
           </p>
           <CopyCode code={installCommand} label="PowerShell · Administrator" />
-          <a
-            className="text-link"
-            href={`https://github.com/${release.repository}/blob/main/scripts/install.ps1`}
-          >
+          <a className="text-link" href={docs("scripts/install.ps1")}>
             Read the installer source <Icon name="external" size={13} />
           </a>
         </section>

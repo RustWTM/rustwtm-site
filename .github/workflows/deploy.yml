@@ -3,19 +3,53 @@ on:
   push:
     branches: [main]
   pull_request:
+  repository_dispatch:
+    types: [product-content-updated]
   workflow_dispatch:
+    inputs:
+      check_only:
+        description: Deploy only if product content changed
+        type: boolean
+        default: false
   schedule:
-    - cron: "17 7 * * *"
+    - cron: "3-58/5 * * * *"
 permissions:
   contents: read
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  sync:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: write
+    outputs:
+      publish: ${{ steps.content.outputs.publish }}
+      sha: ${{ steps.content.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Synchronize product content
+        id: content
+        run: node scripts/sync-product.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTENT_CHECK_ONLY: ${{ (github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.check_only) && 'true' || 'false' }}
   build:
+    needs: sync
+    if: ${{ always() && (github.event_name == 'pull_request' || (needs.sync.result == 'success' && needs.sync.outputs.publish == 'true')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.sync.outputs.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -25,7 +59,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUSTWTM_CONTENT_OFFLINE: "1"
       - run: npm run check
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
         if: github.event_name != 'pull_request'

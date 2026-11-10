@@ -4,10 +4,15 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icons";
 import { ResourceField } from "./resource-field";
-import { links } from "@/lib/product";
 
 type Theme = "light" | "dark" | "system";
-export function SiteShell({ children }: { children: React.ReactNode }) {
+export function SiteShell({
+  children,
+  githubUrl,
+}: {
+  children: React.ReactNode;
+  githubUrl: string;
+}) {
   const pathname = usePathname();
   const [theme, setTheme] = useState<Theme>("system");
   const [motion, setMotion] = useState(false);
@@ -212,7 +217,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               <Icon name="mouse" />
               <span className="motion-indicator" />
             </button>
-            <a className="github-header" href={links.github} aria-label="RustWTM on GitHub">
+            <a className="github-header" href={githubUrl} aria-label="RustWTM on GitHub">
               <Icon name="github" />
               <span>GitHub</span>
               <Icon name="external" size={12} />
@@ -245,6 +250,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               ["/#features", "Features"],
               ["/#screenshots", "The workspace"],
               ["/docs/", "Documentation"],
+              ["/changelog/", "Changelog"],
               ["/download/", "Download"],
             ].map(([url, label]) => (
               <Link key={url} href={url} onClick={() => setMenu(false)}>

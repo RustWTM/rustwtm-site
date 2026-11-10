@@ -25,7 +25,7 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 ## Where things live
 
 - `config/product.json`: the domain, active product repository, future repository and website repository. Product URLs are derived from this file.
-- `src/data/release.json`: a verified, committed release snapshot. `scripts/refresh-release.mjs` refreshes it at build time with a 15-second API deadline. On API failure, the same-repository snapshot remains usable. Missing expected x64 packages or an unexpected asset origin also retain the last known release. A repository change requires a successful refresh, preventing old-owner downloads from being silently used.
+- `src/data/release.json`: the verified product snapshot: stable release assets, published release notes, source changelog and a content hash. The updater uses the immutable product repository ID, bounded GitHub API reads, atomic replacement and a last-good cache. `--strict` is used by automation; ordinary local builds retain a verified cache during API outages.
 - `src/data/gallery.ts` and `src/data/screenshots.json`: gallery content and screenshot provenance. The captures in this site are from the released product tree; newer untracked installed-app and quick-navigation captures were excluded.
 - `public/brand/`: original vector icon plus outlined light/dark wordmarks. Original icon geometry is preserved.
 - `public/screenshots/`: optimized, full-aspect WebP product captures. Illustrative fixture data is identified on the page.
@@ -38,7 +38,7 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 
 The product repository is now [`RustWTM/RustWTM`](https://github.com/RustWTM/RustWTM). The committed release snapshot was refreshed to v0.28.0 after verifying its MSI, portable ZIP and checksum assets on 10 November 2026. Gallery captions continue to identify the actual UI version in each existing capture.
 
-Change `repository` in `config/product.json` only after the new repository serves the product and releases. Run `npm run refresh:release`, inspect the resulting metadata, then build and check. `targetRepository` is informational and is not used for public product links. This website does not move the product repository.
+The immutable `repositoryId` in `config/product.json` follows owner/name transfers of the same product automatically. To select an entirely different product, explicitly update both its ID and fallback repository name. Product links derive from the verified snapshot. `targetRepository` is historical information only.
 
 ## Refresh media
 
@@ -46,7 +46,7 @@ Import only screenshots verified against the release. `node scripts/prepare-asse
 
 ## Publication
 
-The `Build and deploy GitHub Pages` workflow runs on pushes to `main`, manual dispatch and a daily schedule. Pull requests build and check without deployment. The schedule refreshes release metadata in the build output without automatically committing it. Periodically commit a fresh verified snapshot so offline builds stay current.
+The `Build and deploy GitHub Pages` workflow runs on pushes to `main`, manual dispatch, authenticated `product-content-updated` dispatches and a five-minute scheduled check. It commits changed product data, builds that exact snapshot offline and deploys only after checks pass. Unchanged scheduled checks skip installation, build and deployment. Pull requests build and check without publication. See [automatic updates](docs/AUTOMATIC_UPDATES.md) for the active flow, optional immediate notifier and failure behavior.
 
 The workflow uses a clean lockfile installation, type checking, static export, integration checks, a Pages artifact and a separate deployment job. Actions are pinned to verified release SHAs. Enable **GitHub Actions** as the Pages source, set the custom domain to **rustwtm.com**, and enable HTTPS once the certificate is available.
 

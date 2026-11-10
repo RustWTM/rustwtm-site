@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SiteShell } from "@/components/site-shell";
 import { Footer } from "@/components/footer";
+import { links } from "@/lib/product";
 import "./globals.css";
 import "./refinements.css";
 const space = localFont({
@@ -62,7 +63,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: init }} />
       </head>
       <body className={`${space.variable} ${jetbrains.variable}`}>
-        <SiteShell>
+        <SiteShell githubUrl={links.github}>
           {children}
           <Footer />
         </SiteShell>

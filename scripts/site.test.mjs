@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
-const routes = ["", "download", "docs", "privacy", "brand"];
+const routes = ["", "download", "docs", "privacy", "brand", "changelog"];
 const output = path.resolve("out");
 test("both palettes keep text and primary buttons above WCAG AA contrast", async () => {
   const css = await readFile("src/app/globals.css", "utf8");
@@ -117,6 +117,7 @@ test("release API failure preserves the verified download snapshot", async () =>
       "src/data/release.json",
     ])
       await cp(file, path.join(directory, file));
+    await cp("scripts/lib", path.join(directory, "scripts/lib"), { recursive: true });
     const before = await readFile(path.join(directory, "src/data/release.json"), "utf8");
     await writeFile(
       path.join(directory, "offline.mjs"),

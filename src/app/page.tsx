@@ -6,7 +6,7 @@ import { Gallery } from "@/components/gallery";
 import { Governor } from "@/components/governor";
 import { CopyCode } from "@/components/copy-code";
 import { DownloadOptions } from "@/components/download-options";
-import { docs, download, links, release } from "@/lib/product";
+import { docs, download, links, release, releaseNotesHref } from "@/lib/product";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 const capabilities = [
   {
@@ -87,7 +87,7 @@ export default function Home() {
       />
       <section className="hero container" aria-labelledby="hero-title">
         <div className="hero-copy">
-          <a className="release-pill" href={release.url}>
+          <a className="release-pill" href={releaseNotesHref}>
             <span className="status-dot" />
             <span className="mono">{release.version}</span>
             <span className="pill-divider" />

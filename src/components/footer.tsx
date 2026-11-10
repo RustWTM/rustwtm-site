@@ -26,6 +26,7 @@ export function Footer() {
             <Link href="/#features">Features</Link>
             <Link href="/#screenshots">The workspace</Link>
             <Link href="/download/">Download for Windows</Link>
+            <Link href="/changelog/">Changelog</Link>
             <a href={links.releases}>
               Releases <Icon name="external" size={12} />
             </a>

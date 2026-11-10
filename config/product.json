@@ -2,6 +2,7 @@
   "name": "RustWTM",
   "domain": "https://rustwtm.com",
   "repository": "RustWTM/RustWTM",
+  "repositoryId": 1425760656,
   "targetRepository": "rustwtm/rustwtm",
   "websiteRepository": "rustwtm/rustwtm-site",
   "branch": "main"
