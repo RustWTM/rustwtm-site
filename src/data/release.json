@@ -1,0 +1,33 @@
+{
+  "repository": "ersinkoc/RustWTM",
+  "version": "v0.27.2",
+  "publishedAt": "2026-11-10T12:52:06Z",
+  "url": "https://github.com/ersinkoc/RustWTM/releases/tag/v0.27.2",
+  "checkedAt": "2026-11-10T16:54:07.553Z",
+  "assets": [
+    {
+      "name": "RustWTM-0.27.2-x64.msi",
+      "size": 36515840,
+      "url": "https://github.com/ersinkoc/RustWTM/releases/download/v0.27.2/RustWTM-0.27.2-x64.msi",
+      "digest": "sha256:e9910d9a9320b2ff2b5f10d44d52d62ca5074ccd091941b3139ef0bae7a8de9e"
+    },
+    {
+      "name": "RustWTM-0.27.2-x64.msi.sha256",
+      "size": 88,
+      "url": "https://github.com/ersinkoc/RustWTM/releases/download/v0.27.2/RustWTM-0.27.2-x64.msi.sha256",
+      "digest": "sha256:8ed33becfd7cfffd763eb29702855cc82d065edcea5d9e3c976daaf489253839"
+    },
+    {
+      "name": "rustwtm-x86_64-pc-windows-msvc.zip",
+      "size": 49449294,
+      "url": "https://github.com/ersinkoc/RustWTM/releases/download/v0.27.2/rustwtm-x86_64-pc-windows-msvc.zip",
+      "digest": "sha256:987389d42575e28c34d46ba640074293eb567fa27f04db494b777055c2eb0201"
+    },
+    {
+      "name": "rustwtm-x86_64-pc-windows-msvc.zip.sha256",
+      "size": 100,
+      "url": "https://github.com/ersinkoc/RustWTM/releases/download/v0.27.2/rustwtm-x86_64-pc-windows-msvc.zip.sha256",
+      "digest": "sha256:09b12afe9c4dbba09e953d3f56f6623e6f85f0e0a1d3ce689d74c396da7e6f23"
+    }
+  ]
+}

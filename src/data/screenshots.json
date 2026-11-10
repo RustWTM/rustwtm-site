@@ -1,0 +1,100 @@
+[
+  {
+    "name": "processes",
+    "source": "screenshots/processes.png",
+    "sha256": "19de65849b36639622bce63946268e163b30d10dac4b09ccf3caf4b0b7c2801e",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "processes-light",
+    "source": "screenshots/processes-light.png",
+    "sha256": "f4bfe7c4991f7fe961b7de01d45415c26606a4e9f60b9601c408e749ae3dd295",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "performance",
+    "source": "screenshots/performance.png",
+    "sha256": "52561b5a828bc90d47f16e4a20323424504f14e6e57330d614d608d2b16f7900",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "overview",
+    "source": "screenshots/overview.png",
+    "sha256": "ff551f5704dcff9accb29eea1f5be52fc929702042336f67a0d9c580d4268f92",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "events",
+    "source": "screenshots/events.png",
+    "sha256": "9d00b91499b00bd72479c2136c64ee2578c38be375680325847cd68cf37abdea",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "containers",
+    "source": "screenshots/containers.png",
+    "sha256": "5ca8377a1997a8a47991af01ab8c5f92a4c456e2d1a860f1b5ccd37288ccc93f",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "ports",
+    "source": "screenshots/ports.png",
+    "sha256": "c875588e10281d512ee47328c8876d8fe7a98790a55532698a31ae3350030de4",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "services",
+    "source": "screenshots/services.png",
+    "sha256": "ad88eee0f9e9e98fa8a6a37e3abece2c25794c8a3885245d108d9a6bb9af563b",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "disks",
+    "source": "screenshots/disks.png",
+    "sha256": "2f0abfc95fa58d7833c5c7c1054bc3eb95afe14e9473e77c03fe2c15d8db812f",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "sensors",
+    "source": "screenshots/sensors.png",
+    "sha256": "aa7e4a83d5cf421284bc535236cf8918962b9a4e34a223a08d6240a50cc05ea9",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "limits",
+    "source": "screenshots/limits.png",
+    "sha256": "c31494d45b7d34c8b559d7fba2aa39f823943ed44d4b49f64b125791d2f26766",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "performance-timeline",
+    "source": "screenshots/performance-timeline.png",
+    "sha256": "e4a18426e1b68434ee7609e339edfabe5096420f8af05f9e585697edc2092d6f",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "process-inspection",
+    "source": "screenshots/process-inspection.png",
+    "sha256": "2951c6862e0727af1865e8978306905b1e27e8d2a13d4226ed76bc07f4f0fc4e",
+    "width": 1440,
+    "height": 1000
+  },
+  {
+    "name": "governor",
+    "source": "screenshots/governor.png",
+    "sha256": "ca247c9af933dbd946c40e3c97d398464b79fd2ae7928996586b29afa84180db",
+    "width": 1440,
+    "height": 1000
+  }
+]

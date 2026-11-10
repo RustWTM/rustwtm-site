@@ -1,0 +1,31 @@
+{
+  "name": "rustwtm-site",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@12.2.2",
+  "engines": {
+    "node": "26.13.0",
+    "npm": "12.2.2"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "refresh:release": "node scripts/refresh-release.mjs",
+    "build": "npm run refresh:release && next build",
+    "typecheck": "tsc --noEmit",
+    "check": "node --test scripts/site.test.mjs",
+    "preview": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "prettier": "3.9.10",
+    "sharp": "0.35.5",
+    "typescript": "7.0.2"
+  }
+}

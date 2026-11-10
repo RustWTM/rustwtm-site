@@ -1,0 +1,7 @@
+node_modules/
+.next/
+out/
+.temp_files/
+*.tsbuildinfo
+.env*
+!.env.example
