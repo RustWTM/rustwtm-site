@@ -7,6 +7,7 @@ The website checks the official product repository automatically and rebuilds on
 1. GitHub Actions checks for changes every five minutes, at minutes 3, 8, 13 … 58. GitHub may delay scheduled jobs; this is a polling target, not an exact delivery deadline.
 2. The sync job resolves the product through its immutable GitHub repository ID, then fetches the latest stable release, recent published releases and the default branch’s `CHANGELOG.md`.
 3. The updater validates the repository identity, official download origins, expected x64 MSI/ZIP and their checksum companions. It builds one atomic snapshot at `src/data/release.json`.
+   The snapshot and public receipt carry schema version 1; legacy snapshots can be refreshed, while unknown future cache schemas are rejected.
 4. A content hash ignores polling time and download counters. If nothing changed, the job exits successfully without a new commit, dependency installation, build or deployment.
 5. Changed content is committed by the website’s own scoped `GITHUB_TOKEN`. The same workflow builds that exact commit, runs the checks and publishes it with GitHub Pages. The token’s push does not recursively start another build.
 6. An API/validation failure stops the automatic publication. The existing live website and its last verified download snapshot remain available. Local ordinary builds can also use the verified cache if GitHub is unavailable.

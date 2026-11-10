@@ -2,6 +2,7 @@ import { release } from "@/lib/product";
 export const dynamic = "force-static";
 export function GET() {
   return Response.json({
+    schemaVersion: 1,
     repository: release.repository,
     repositoryId: release.repositoryId,
     version: release.version,

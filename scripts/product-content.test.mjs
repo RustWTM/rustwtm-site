@@ -51,6 +51,7 @@ test("published release, package pairs and development notes stay separate", () 
     { ...data.latest, tag_name: "v1.3.0", draft: true },
   ];
   const result = buildSnapshot(data);
+  assert.equal(result.schemaVersion, 1);
   assert.equal(result.version, "v1.2.3");
   assert.equal(result.history.length, 1);
   assert.match(result.history[0].body, /published fix/);
@@ -89,6 +90,14 @@ test("a release missing a checksum or using a foreign download origin is rejecte
 });
 test("repository identity survives rename but refuses a different repository", () => {
   const old = buildSnapshot(fixture());
+  assert.throws(
+    () =>
+      validCachedSnapshot(
+        { ...old, schemaVersion: 2 },
+        { repository: "Example/Product", repositoryId: 42 },
+      ),
+    /Unsupported cached snapshot schema/,
+  );
   assert.equal(validCachedSnapshot(old, { repository: "Renamed/Product", repositoryId: 42 }), old);
   assert.throws(
     () => validCachedSnapshot(old, { repository: "Example/Product", repositoryId: 43 }),

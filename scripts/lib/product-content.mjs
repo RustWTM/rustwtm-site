@@ -38,6 +38,8 @@ function repositoryUrl(value, repository, suffix) {
   return url.href;
 }
 export function validCachedSnapshot(value, config) {
+  if (value?.schemaVersion !== undefined && value.schemaVersion !== 1)
+    throw new Error("Unsupported cached snapshot schema");
   if (!value || !stableTag.test(value.version) || !Array.isArray(value.assets))
     throw new Error("Invalid cached release snapshot");
   const sameId =
@@ -116,6 +118,7 @@ export function buildSnapshot({
     });
   }
   const content = {
+    schemaVersion: 1,
     repository,
     repositoryId: identity.id,
     branch: identity.default_branch,
