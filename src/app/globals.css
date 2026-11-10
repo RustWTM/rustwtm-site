@@ -1791,6 +1791,9 @@ main {
 .governor-mobile {
   display: none;
 }
+[data-page-visible="hidden"] .flow-pulse {
+  animation-play-state: paused !important;
+}
 .docs-layout > * {
   min-width: 0;
 }

@@ -30,6 +30,8 @@ The five pages were captured in **Light and Dark** at **375, 768, 1024, 1440, 19
 - Mobile navigation opened, followed Documentation and closed after navigation.
 - Gallery ArrowRight, Home and End changed the selected tab correctly.
 - Screenshot modal opened with focus on Close; Escape closed it and restored focus to the trigger.
+- Tab from the modal Close button focused the full-size image scroll region, allowing keyboard inspection without escaping the modal.
+- System selection matched the browser's current device appearance. The MCP configuration sample parsed as valid JSON and contained the expected Windows executable path.
 - Enforcing illustration changed its explanation without running system actions.
 - Copy-code control reported `Copied`; no clipboard API error occurred. The browser-control clipboard read returned an empty value, so system clipboard contents were not independently confirmed.
 - No warning or error console entries were observed in these browser checks.
@@ -38,4 +40,16 @@ Reduced-motion initialization, hidden-tab loop cancellation, bounded click effec
 
 ## Hosted publication
 
-Publication evidence is appended after GitHub Actions deployment and HTTPS verification. Local success alone is not recorded as a completed live deployment.
+The initial implementation commit `4069480ccb8347eafcc0f834a99f1dc5dd9059ef` passed the [hosted build and deployment](https://github.com/RustWTM/rustwtm-site/actions/runs/42859518535). The follow-up accessibility change also runs through the same workflow; the latest exact revision is visible in the [Actions history](https://github.com/RustWTM/rustwtm-site/actions).
+
+At 16:58 UTC on 2026-11-10, the live check verified **40 HTTPS paths** (all public pages, current script and stylesheet URLs, logo variants, font files, screenshots, social image, robots, sitemap and CNAME), with **0 failures**. Downloads and checksum destinations were also checked in the external-link pass.
+
+- `https://rustwtm.com/` returned 200 with the expected product title.
+- Direct `/download/`, `/docs/`, `/privacy/` and `/brand/` requests returned 200.
+- An unknown path returned HTTP 404 with the designed RustWTM 404 page.
+- `http://rustwtm.com/` redirected with HTTP 301 to `https://rustwtm.com/`.
+- `https://www.rustwtm.com/` redirected with HTTP 301 to the canonical apex.
+- GitHub reported an approved certificate covering both apex and www, and `https_enforced: true`.
+- No DNS records were modified. Existing apex GitHub Pages A records and the www CNAME resolved successfully.
+
+The machine-readable live receipt is retained locally at `.temp_files/live-check.json`. The production browser and latest implementation workflow are rechecked at handoff; this report does not substitute for those observations.

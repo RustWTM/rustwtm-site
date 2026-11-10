@@ -53,7 +53,12 @@ export function ScreenshotLightbox({
             <Icon name="close" />
           </button>
         </div>
-        <div className="lightbox-image">
+        <div
+          className="lightbox-image"
+          tabIndex={0}
+          role="region"
+          aria-label="Full-size screenshot. Scroll to inspect."
+        >
           <img src={src} width="1440" height="1000" alt={alt} />
         </div>
         <p>Actual RustWTM capture · Illustrative sample data · Scroll to inspect · Esc to close</p>

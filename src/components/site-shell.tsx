@@ -336,6 +336,7 @@ function Background({ enabled }: { enabled: boolean }) {
       ctx.globalAlpha = 1;
     };
     const start = () => {
+      document.documentElement.dataset.pageVisible = document.hidden ? "hidden" : "visible";
       cancelAnimationFrame(frame);
       if (!document.hidden) {
         last = performance.now();
