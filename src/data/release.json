@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 1,
   "repository": "RustWTM/RustWTM",
   "repositoryId": 1425760656,
   "branch": "main",
@@ -178,6 +179,6 @@
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
     "unreleased": "### Changed\n\n- Refine all desktop views through shared graphite/light surfaces, raised page\n  headers, quieter inset navigation, aligned resource readings and padded section\n  cards. Give service settings a responsive two-column layout while preserving\n  compact-window actions and square geometry.\n\n- Present RustWTM as an MIT-licensed oxog.net project maintained by OXOGNET OÜ,\n  Estonia, across the desktop About page, documentation and executable/installer\n  metadata. Use the active rustwtm.com and rustwtm/rustwtm project links."
   },
-  "checkedAt": "2026-11-10T18:58:53.924Z",
-  "contentHash": "5466f56ef80360442d5dba5835d6da2a0dce69b0886c94858213ce0bb016f67d"
+  "checkedAt": "2026-11-10T19:15:24.672Z",
+  "contentHash": "a85935ac48835d04edf54b54c40360737325c928cff56692dc5b5ea4a776507a"
 }
