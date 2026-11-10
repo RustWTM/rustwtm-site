@@ -46,7 +46,7 @@ All eight supplied websites were opened in the browser; accessible page content 
 | [CacheStorm](https://cachestorm.com)             | Geometric engine and infrastructure labels, strong source CTA                                                | Original process and resource SVGs, open-source contribution close                                             |
 | [OpenLoadBalancer](https://openloadbalancer.dev) | Connected-node explanation and clear interactive illustration label                                          | Explicitly illustrative dry-run/enforcement explanation; no actual system scan                                 |
 
-The final site does not include the references’ Oxog promotional area.
+The initial delivery omitted the references’ Oxog promotional area, following the original brief. In the subsequent 2026-11-10 request, the user explicitly asked to include it and use oxog.net in the website copyright. The updated footer uses the public reference mark (pink `#ed0878`, purple `#b477e4`) and links to `https://oxog.net`.
 
 ## Verified stable implementation versions
 

@@ -37,12 +37,17 @@ export function Gallery() {
           </button>
         ))}
       </div>
+      <p className="gallery-hint">
+        Swipe to explore every view <Icon name="arrow" size={13} />
+      </p>
       <div id="screen-panel" role="tabpanel" aria-labelledby={`tab-${item.id}`} tabIndex={0}>
-        <ScreenshotLightbox
-          src={`/screenshots/${item.id}.webp`}
-          alt={`RustWTM ${item.label} workspace with example data`}
-          priority={false}
-        />
+        <div className="gallery-media" key={item.id}>
+          <ScreenshotLightbox
+            src={`/screenshots/${item.id}.webp`}
+            alt={`RustWTM ${item.label} workspace with example data`}
+            priority={false}
+          />
+        </div>
         <div className="gallery-caption">
           <div>
             <span className="eyebrow">{String(active + 1).padStart(2, "0")} / THE WORKSPACE</span>

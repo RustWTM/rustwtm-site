@@ -56,8 +56,12 @@ DNS for the apex must resolve to GitHub Pages. Preserve unrelated DNS records. T
 
 Theme selection offers Light, Dark and System, uses native radio-button keyboard behavior and persists locally. A pre-paint initialization script prevents an incorrect-theme flash. The mouse button independently stops the background rendering loop and removes pointer listeners. Reduced motion starts with effects disabled. Diagram animation pauses outside its viewport; background animation stops in hidden tabs.
 
+The resource field uses bounded, resource-colored paths, magnetic pointer response and short-lived click waves. `src/lib/motion.ts` owns the frame loop and geometry; deterministic tests cover cancellation, stale callbacks, visibility, throttling and bounded field sizes. The footer includes the animated Oxog studio signature, controlled by the same motion preference and viewport observer. Mobile navigation and Appearance are mutually exclusive and support Escape.
+
 Gallery tabs use arrow keys, Home and End. Screenshot enlargement uses a native modal dialog with Escape, focus containment and focus restoration. Code copying reports success or offers selected text if clipboard access is unavailable. The site contains no analytics, accounts or computer monitoring.
 
 ## Licensing
 
-Website source and product branding: MIT, copyright Ersin KOÇ. Fonts: SIL Open Font License, included beside each font. Product screenshots and icon originate in the MIT-licensed product repository.
+Website presentation copyright: oxog.net. The source license and attribution of the original MIT-licensed RustWTM product icon and screenshots are retained. Fonts: SIL Open Font License, included beside each font.
+
+`public/og.png` is the current 1200×630 social image, rendered from the outlined vector source `public/brand/og.svg`. All page sharing metadata references it; the earlier `opengraph.png` file remains available for existing links.

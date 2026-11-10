@@ -51,9 +51,28 @@ test("every exported page has its own canonical, metadata, social image, main la
       `${route}: canonical`,
     );
     assert.ok(html.includes('property="og:image"'), `${route}: sharing image`);
+    assert.match(
+      html,
+      /property="og:image" content="https:\/\/rustwtm.com\/og.png"/,
+      `${route}: new OG image`,
+    );
     assert.ok(html.includes('name="description"'), `${route}: description`);
     assert.ok(!html.includes('href="#"'), `${route}: placeholder link`);
   }
+});
+test("every page shows the Oxog studio link and requested website copyright", async () => {
+  for (const route of routes) {
+    const html = await readFile(path.join(output, route, "index.html"), "utf8");
+    const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0];
+    assert.ok(footer?.includes('href="https://oxog.net"'), `${route}: Oxog destination`);
+    assert.ok(footer.includes("Small studio."), `${route}: studio promotion`);
+    assert.ok(footer.includes("oxog.net</a>. All rights reserved."), `${route}: copyright`);
+    assert.ok(!footer.includes("Ersin KOÇ"), `${route}: superseded footer credit`);
+  }
+  const png = await readFile(path.join(output, "og.png"));
+  assert.deepEqual([...png.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  assert.equal(png.readUInt32BE(16), 1200);
+  assert.equal(png.readUInt32BE(20), 630);
 });
 test("all local page links, anchors, fonts, images and script references resolve in the static export", async () => {
   for (const route of routes) {

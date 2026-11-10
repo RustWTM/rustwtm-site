@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { links, release } from "@/lib/product";
 import { Icon } from "./icons";
+import { OxogPromo } from "./oxog-promo";
 export function Footer() {
   return (
     <footer className="footer">
@@ -46,8 +47,12 @@ export function Footer() {
             <a href={links.license}>MIT license</a>
           </div>
         </div>
+        <OxogPromo />
         <div className="footer-bottom">
-          <span>© {new Date().getUTCFullYear()} Ersin KOÇ & RustWTM contributors.</span>
+          <span>
+            © {new Date().getUTCFullYear()} <a href="https://oxog.net">oxog.net</a>. All rights
+            reserved.
+          </span>
           <span className="footer-last">
             <a href={release.url} className="mono">
               <span className="status-dot" />

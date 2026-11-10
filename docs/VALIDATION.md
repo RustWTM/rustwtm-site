@@ -2,6 +2,8 @@
 
 Validation date: 2026-11-10. This report distinguishes local checks, browser observations and hosted publication.
 
+The follow-up design, animation, Oxog branding and `og.png` review is recorded in [DESIGN_REVIEW.md](DESIGN_REVIEW.md), including the newer 80-view matrix and 11-test result.
+
 ## Local production checks
 
 - Clean `npm ci` from the committed lockfile: passed, 30 packages audited, no reported vulnerabilities.

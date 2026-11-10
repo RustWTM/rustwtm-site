@@ -13,7 +13,7 @@ export function pageMetadata(title: string, description: string, path: string): 
       locale: "en_US",
       images: [
         {
-          url: "/opengraph.png",
+          url: "/og.png",
           width: 1200,
           height: 630,
           alt: "RustWTM — A clearer view. A calmer PC.",
@@ -24,7 +24,7 @@ export function pageMetadata(title: string, description: string, path: string): 
       card: "summary_large_image",
       title: `${title} · RustWTM`,
       description,
-      images: ["/opengraph.png"],
+      images: ["/og.png"],
     },
   };
 }

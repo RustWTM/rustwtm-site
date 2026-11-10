@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { SiteShell } from "@/components/site-shell";
 import { Footer } from "@/components/footer";
 import "./globals.css";
+import "./refinements.css";
 const space = localFont({
   src: "../../public/fonts/space-grotesk.woff2",
   variable: "--font-space-grotesk",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     description: "A clearer view. A calmer PC. The open-source Windows task manager built in Rust.",
     images: [
       {
-        url: "/opengraph.png",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "RustWTM — A clearer view. A calmer PC.",
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RustWTM — A clearer view. A calmer PC.",
     description: "The open-source Windows task manager built in Rust.",
-    images: ["/opengraph.png"],
+    images: ["/og.png"],
   },
   icons: {
     icon: [

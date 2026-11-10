@@ -61,7 +61,7 @@ export default function Brand() {
             <a href="/brand/rustwtm-icon.svg" download>
               Original vector icon <Icon name="download" size={15} />
             </a>
-            <a href="/opengraph.png" download>
+            <a href="/og.png" download>
               Social sharing image <Icon name="download" size={15} />
             </a>
           </div>
