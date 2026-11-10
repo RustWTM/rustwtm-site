@@ -26,7 +26,7 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 
 - `config/product.json`: the domain, active product repository, future repository and website repository. Product URLs are derived from this file.
 - `src/data/release.json`: the verified product snapshot: stable release assets, published release notes, source changelog and a content hash. The updater uses the immutable product repository ID, bounded GitHub API reads, atomic replacement and a last-good cache. `--strict` is used by automation; ordinary local builds retain a verified cache during API outages.
-- `src/data/gallery.ts` and `src/data/screenshots.json`: gallery content and screenshot provenance. The captures in this site are from the released product tree; newer untracked installed-app and quick-navigation captures were excluded.
+- `src/data/gallery.ts` and `src/data/screenshots.json`: gallery content and screenshot provenance, including the exact product release tag, commit and input hashes.
 - `public/brand/`: original vector icon plus outlined light/dark wordmarks. Original icon geometry is preserved.
 - `public/screenshots/`: optimized, full-aspect WebP product captures. Illustrative fixture data is identified on the page.
 - `public/fonts/`: self-hosted variable Latin fonts and their licenses. Only Space Grotesk and JetBrains Mono are loaded. `--font-quicksand` is defined as a reserved design token, without adding another font download.
@@ -42,7 +42,7 @@ The immutable `repositoryId` in `config/product.json` follows owner/name transfe
 
 ## Refresh media
 
-Import only screenshots verified against the release. `node scripts/prepare-assets.mjs <product-checkout>` converts the selected PNGs to WebP and records source hashes. Check captions and release provenance when updating media. No product source files are modified.
+Import only screenshots verified against the release. `node scripts/prepare-assets.mjs <product-checkout> <release-tag>` reads the selected PNGs directly from the tagged Git tree, converts them to WebP and records source hashes. Check the renders and captions when updating media. No product source files are modified.
 
 ## Publication
 

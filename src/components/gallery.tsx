@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { gallery } from "@/data/gallery";
 import { Icon } from "./icons";
 import { ScreenshotLightbox } from "./lightbox";
-export function Gallery() {
+export function Gallery({ captureVersion }: { captureVersion: string }) {
   const [active, setActive] = useState(0);
   const tabs = useRef<HTMLDivElement>(null);
   const item = gallery[active];
@@ -58,7 +58,7 @@ export function Gallery() {
             <Icon name="monitor" size={15} />
             Actual application captures
             <br />
-            v0.27.1 UI · Example data
+            {captureVersion} UI · Example data
           </span>
         </div>
       </div>

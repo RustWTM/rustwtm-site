@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
     inputs:
       check_only:
-        description: Deploy only if product content changed
+        description: Deploy only if product content changed or the live site is behind
         type: boolean
         default: false
   schedule:
-    - cron: "3-58/5 * * * *"
+    - cron: "3,8,13,18,23,28,33,38,43,48,53,58 * * * *"
 permissions:
   contents: read
 concurrency:

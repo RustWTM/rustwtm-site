@@ -6,7 +6,15 @@ import { Gallery } from "@/components/gallery";
 import { Governor } from "@/components/governor";
 import { CopyCode } from "@/components/copy-code";
 import { DownloadOptions } from "@/components/download-options";
-import { docs, download, links, release, releaseNotesHref } from "@/lib/product";
+import {
+  docs,
+  download,
+  interfaceLanguages,
+  links,
+  release,
+  releaseNotesHref,
+} from "@/lib/product";
+import screenshots from "@/data/screenshots.json";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 const capabilities = [
   {
@@ -61,9 +69,27 @@ const faq = [
   ],
   [
     "Which languages are supported?",
-    "English, Türkçe, Deutsch, Français and Español. The first launch follows the Windows UI language, and your selection is saved when you change it.",
+    `The desktop interface and notifications are available in ${interfaceLanguages} languages, including English, Türkçe, Deutsch, Español, 日本語 and 简体中文. The default follows Windows, with English as a fallback. Choose a language in Settings → This window.`,
   ],
 ];
+const highlights = [
+  {
+    icon: "cpu",
+    title: "Look closer at each device",
+    text: "Inspect NVMe drive health, GPU engines and memory, and per-device charts. RustWTM shows which readings your hardware can provide.",
+  },
+  {
+    icon: "activity",
+    title: "Replay a slowdown",
+    text: "Look back at recent resource samples, the apps behind them and any protection actions. Edit and preview process rules before applying them.",
+  },
+  {
+    icon: "box",
+    title: "Review app updates",
+    text: "See installed desktop and Microsoft Store apps. Optional WinGet discovery lets you review each update before launching its installer.",
+  },
+] as const;
+const highlightsVersion = "v0.29.0";
 export default function Home() {
   return (
     <main id="main">
@@ -81,7 +107,7 @@ export default function Home() {
             url: "https://rustwtm.com",
             license: links.license,
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            author: { "@type": "Person", name: "Ersin KOÇ" },
+            publisher: { "@type": "Organization", name: "OXOGNET OÜ", url: "https://oxog.net" },
           }),
         }}
       />
@@ -91,7 +117,7 @@ export default function Home() {
             <span className="status-dot" />
             <span className="mono">{release.version}</span>
             <span className="pill-divider" />
-            <span>A fresh perspective on your PC</span>
+            <span>See what’s new</span>
             <Icon name="arrow" size={15} />
           </a>
           <div className="eyebrow hero-eyebrow">THE WINDOWS TASK MANAGER, RECONSIDERED</div>
@@ -160,7 +186,7 @@ export default function Home() {
             <span className="mono">
               <span className="status-dot" />A REAL WORKSPACE. A WIDER VIEW.
             </span>
-            <span>Actual app capture · Example data</span>
+            <span>Actual app capture · {screenshots.version} · Example data</span>
           </div>
           <div className="hero-corner-mark" aria-hidden="true">
             01 — SYSTEM CLARITY
@@ -269,6 +295,26 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <section className="container release-spotlight" aria-labelledby="release-spotlight-title">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">INTRODUCED IN {highlightsVersion}</span>
+            <h2 id="release-spotlight-title">More ways to find out what happened.</h2>
+          </div>
+          <a className="text-link" href={`${links.releases}/tag/${highlightsVersion}`}>
+            Read the {highlightsVersion} release notes <Icon name="external" size={14} />
+          </a>
+        </div>
+        <div className="toolbox-grid">
+          {highlights.map(({ icon, title, text }) => (
+            <article key={title}>
+              <Icon name={icon} size={24} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <section className="section workspace-section" id="screenshots">
         <div className="container">
           <div className="section-heading">
@@ -286,7 +332,7 @@ export default function Home() {
               Explore the real interface, screen by screen.
             </p>
           </div>
-          <Gallery />
+          <Gallery captureVersion={screenshots.version} />
         </div>
       </section>
       <section className="section container protection-section" id="protection">

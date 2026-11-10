@@ -5,6 +5,8 @@ export { release };
 export const repo = `https://github.com/${release.repository}`;
 export const docs = (path: string) => `${repo}/blob/${release.branch ?? config.branch}/${path}`;
 export const releaseNotesHref = `/changelog/#${release.version.replaceAll(".", "-")}`;
+export const interfaceLanguages = 27;
+export const localizationHref = docs("docs/localization.md");
 export const links = {
   github: repo,
   releases: `${repo}/releases`,

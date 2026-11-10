@@ -3,7 +3,15 @@ import Link from "next/link";
 import { DownloadOptions } from "@/components/download-options";
 import { CopyCode } from "@/components/copy-code";
 import { Icon } from "@/components/icons";
-import { docs, installCommand, links, release, releaseNotesHref } from "@/lib/product";
+import {
+  docs,
+  installCommand,
+  interfaceLanguages,
+  links,
+  localizationHref,
+  release,
+  releaseNotesHref,
+} from "@/lib/product";
 export const metadata = pageMetadata(
   "Download for Windows",
   "Download the latest stable RustWTM x64 MSI installer or portable ZIP. Windows requirements, installation instructions and a careful first-run guide.",
@@ -160,7 +168,13 @@ export default function Download() {
               </tr>
               <tr>
                 <th scope="row">Languages</th>
-                <td>English · Türkçe · Deutsch · Français · Español</td>
+                <td>
+                  {interfaceLanguages} desktop interface and notification languages.{" "}
+                  <a className="text-link" href={localizationHref}>
+                    See the full list
+                  </a>
+                  .
+                </td>
               </tr>
             </tbody>
           </table>
@@ -171,6 +185,15 @@ export default function Download() {
         </section>
         <section id="updates">
           <h2>Keep your perspective current.</h2>
+          <p className="important-note">
+            <Icon name="shield" size={18} />
+            <span>
+              <strong>Upgrading from v0.28.0 or earlier?</strong> Use the MSI or the bundled
+              installer to update the desktop app, CLI and service together. v0.29.0 introduced
+              incident replay and a new service protocol; old clients and the new service cannot
+              connect to each other.
+            </span>
+          </p>
           <p>
             RustWTM can notify you about updates. Its update flow downloads the new installer,
             checks the published SHA-256 and restarts the app after installation. You can also

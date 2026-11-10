@@ -24,6 +24,30 @@ export const gallery = [
     color: "memory",
   },
   {
+    id: "device-disk-details",
+    label: "Disk health",
+    title: "See what your drive can tell you.",
+    description:
+      "Inspect temperature, endurance, spare capacity and lifetime counters reported by supported NVMe drives. Unavailable readings stay visible as gaps.",
+    color: "disk",
+  },
+  {
+    id: "device-gpu-overview",
+    label: "GPU devices",
+    title: "See how each graphics device is working.",
+    description:
+      "Switch between GPUs and inspect engine activity, recent load and dedicated or shared memory for the selected device.",
+    color: "memory",
+  },
+  {
+    id: "installed-apps",
+    label: "Installed apps",
+    title: "Know what’s installed before you update.",
+    description:
+      "Browse desktop apps and current-user Microsoft Store registrations. Optional WinGet discovery lets you review exact package updates before opening their installers.",
+    color: "accent",
+  },
+  {
     id: "overview",
     label: "Overview",
     title: "Your machine, at a glance.",

@@ -10,6 +10,26 @@ export const metadata = pageMetadata(
 );
 const guides = [
   {
+    title: "Device health & incident replay",
+    text: "Per-device charts, NVMe health, resource history and the limits of hardware readings.",
+    path: "docs/product-expansion.md",
+  },
+  {
+    title: "Installed apps & reviewed updates",
+    text: "Microsoft Store inventory, optional WinGet discovery and what happens after you select an update.",
+    path: "docs/inventory-app-management.md",
+  },
+  {
+    title: "Desktop controls",
+    text: "Optional numeric tray icons, shortcuts and Task Manager integration.",
+    path: "docs/desktop-controls.md",
+  },
+  {
+    title: "Interface languages",
+    text: "Supported languages, Windows defaults and how to choose a different language.",
+    path: "docs/localization.md",
+  },
+  {
     title: "Process workspace",
     text: "List, Tree and Apps views, the adaptive inspector and stable-row behavior.",
     path: "docs/process-workspace.md",
@@ -128,7 +148,8 @@ export default function Docs() {
             <p>
               Rules can match process names or paths, including wildcards, and optionally require
               sustained CPU, memory or GPU conditions. Actions include priority changes, efficiency
-              mode, caps and termination. CPU percentages use the whole machine as their scale.
+              mode, caps and termination. The visual rule editor lets you preview how a rule would
+              evaluate before applying it. CPU percentages use the whole machine as their scale.
             </p>
             <p>
               App limits share CPU and memory budgets across matching app instances and their

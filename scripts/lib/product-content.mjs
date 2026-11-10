@@ -149,6 +149,9 @@ export async function fetchJson(url, { token, fetcher = fetch, maxBytes = 2 * 10
     signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
+  return readJsonResponse(response, maxBytes);
+}
+export async function readJsonResponse(response, maxBytes) {
   const reader = response.body.getReader();
   let size = 0;
   const chunks = [];
@@ -157,7 +160,7 @@ export async function fetchJson(url, { token, fetcher = fetch, maxBytes = 2 * 10
       const { done, value } = await reader.read();
       if (done) break;
       size += value.byteLength;
-      if (size > maxBytes) throw new Error("GitHub response exceeds size limit");
+      if (size > maxBytes) throw new Error("JSON response exceeds size limit");
       chunks.push(value);
     }
   } catch (error) {

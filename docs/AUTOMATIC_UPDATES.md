@@ -8,7 +8,7 @@ The website checks the official product repository automatically and rebuilds on
 2. The sync job resolves the product through its immutable GitHub repository ID, then fetches the latest stable release, recent published releases and the default branch’s `CHANGELOG.md`.
 3. The updater validates the repository identity, official download origins, expected x64 MSI/ZIP and their checksum companions. It builds one atomic snapshot at `src/data/release.json`.
    The snapshot and public receipt carry schema version 1; legacy snapshots can be refreshed, while unknown future cache schemas are rejected.
-4. A content hash ignores polling time and download counters. If nothing changed, the job exits successfully without a new commit, dependency installation, build or deployment.
+4. A content hash ignores polling time and download counters. If the source is unchanged, the job compares the committed hash with the live `/updates.json` receipt. A match skips the build; a mismatch retries publication even when the snapshot is already committed. An unavailable or invalid receipt fails the check and is retried at the next poll.
 5. Changed content is committed by the website’s own scoped `GITHUB_TOKEN`. The same workflow builds that exact commit, runs the checks and publishes it with GitHub Pages. The token’s push does not recursively start another build.
 6. An API/validation failure stops the automatic publication. The existing live website and its last verified download snapshot remain available. Local ordinary builds can also use the verified cache if GitHub is unavailable.
 
@@ -27,7 +27,7 @@ The system does not generate new marketing claims or replace screenshots based o
 
 ## Manual and event-driven entry points
 
-Run **Build and deploy GitHub Pages** from Actions for a forced publication. Select **Deploy only if product content changed** to test the change detector without forcing a rebuild.
+Run **Build and deploy GitHub Pages** from Actions for a forced publication. Select **Deploy only if product content changed or the live site is behind** to run the same check as the schedule.
 
 The workflow also accepts an authenticated `repository_dispatch` event of type `product-content-updated`. It ignores event payload URLs/branches and re-reads the configured official source. A GitHub App scoped to the website repository can use this receiver for immediate product-release notifications in the future.
 
@@ -43,6 +43,6 @@ The current repository policy rejects deploy keys (`Deploy keys are disabled for
 
 ## Validation
 
-The normal test command covers metadata validation, unchanged-content detection, release/changelog edits, missing checksums, repository transfers, bounded API reads, cached fallback, actual Git commits, no-op runs and a gated concurrent push. Tests use local disposable Git repositories and injected API responses, without publishing fake product releases or exhausting system resources.
+The normal test command covers metadata validation, unchanged-content detection, release/changelog edits, missing checksums, repository transfers, bounded API reads, cached fallback, actual Git commits, no-op runs, publication retries and a gated concurrent push. Tests use local disposable Git repositories and injected API responses, without publishing fake product releases or exhausting system resources.
 
 `actionlint` checks the workflow. Browser checks cover the new changelog page, theme/layout behavior and navigation. Hosted deployment and a second check-only/no-change run are verified during rollout.

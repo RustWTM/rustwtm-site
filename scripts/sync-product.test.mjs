@@ -65,7 +65,7 @@ async function setup(t) {
   };
   await writeFile(
     path.join(seed, "config/product.json"),
-    JSON.stringify({ repository, repositoryId: 42 }),
+    JSON.stringify({ repository, repositoryId: 42, domain: "https://fixture.example" }),
   );
   await writeFile(
     path.join(seed, "src/data/release.json"),
@@ -83,7 +83,32 @@ async function setup(t) {
   await writeFile(fixture, JSON.stringify(input));
   await writeFile(
     preload,
-    `import fs from 'node:fs';import {execFileSync} from 'node:child_process';const data=JSON.parse(fs.readFileSync(process.env.SYNC_FIXTURE,'utf8'));globalThis.fetch=async url=>{if(process.env.SYNC_FAIL==='1')return new Response('{}',{status:503});if(process.env.SYNC_RACE==='1'&&String(url).includes('/contents/')&&!fs.existsSync(process.env.SYNC_MARKER)){fs.writeFileSync(process.env.SYNC_MARKER,'1');fs.writeFileSync(process.env.SYNC_SEED+'/concurrent.txt','Preserve this edit');execFileSync('git',['add','concurrent.txt'],{cwd:process.env.SYNC_SEED});execFileSync('git',['commit','-m','Concurrent edit'],{cwd:process.env.SYNC_SEED});execFileSync('git',['push','origin','main'],{cwd:process.env.SYNC_SEED,stdio:'pipe'});}const value=String(url).includes('/repositories/')?data.identity:String(url).endsWith('/releases/latest')?data.latest:String(url).includes('/releases?')?data.releases:data.changelog;return new Response(JSON.stringify(value));};`,
+    `import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+const data = JSON.parse(fs.readFileSync(process.env.SYNC_FIXTURE, 'utf8'));
+globalThis.fetch = async (url, options) => {
+  const target = new URL(url);
+  if (target.pathname === '/updates.json') {
+    if (target.origin !== 'https://fixture.example' || options.headers.Authorization)
+      throw new Error('Live receipt must be public and use the configured domain');
+    if (process.env.SYNC_LIVE_FAIL === '1') return new Response('{}', {status: 503});
+    const receipt = JSON.parse(fs.readFileSync('src/data/release.json', 'utf8'));
+    if (process.env.SYNC_LIVE_STALE === '1') receipt.contentHash = 'f'.repeat(64);
+    return Response.json(receipt);
+  }
+  if (process.env.SYNC_FAIL === '1') return new Response('{}', {status: 503});
+  if (process.env.SYNC_RACE === '1' && target.pathname.includes('/contents/') && !fs.existsSync(process.env.SYNC_MARKER)) {
+    fs.writeFileSync(process.env.SYNC_MARKER, '1');
+    fs.writeFileSync(process.env.SYNC_SEED + '/concurrent.txt', 'Preserve this edit');
+    execFileSync('git', ['add','concurrent.txt'], {cwd: process.env.SYNC_SEED});
+    execFileSync('git', ['commit','-m','Concurrent edit'], {cwd: process.env.SYNC_SEED});
+    execFileSync('git', ['push','origin','main'], {cwd: process.env.SYNC_SEED, stdio: 'pipe'});
+  }
+  const value = target.pathname.includes('/repositories/') ? data.identity
+    : target.pathname.endsWith('/releases/latest') ? data.latest
+    : target.pathname.endsWith('/releases') ? data.releases : data.changelog;
+  return Response.json(value);
+};`,
   );
   const run = (extra = {}) =>
     spawnSync(process.execPath, ["scripts/sync-product.mjs"], {
@@ -139,6 +164,24 @@ test("automation retries a concurrent push and retains the other writer’s edit
       .body,
     "Updated official notes",
   );
+});
+test("a failed publication is retried even after its snapshot was committed", async (t) => {
+  const f = await setup(t);
+  const first = f.run();
+  assert.equal(first.status, 0, first.stderr);
+  const committed = git(f.root, "--git-dir", f.remote, "rev-parse", "main");
+  await writeFile(f.output, "");
+
+  const retry = f.run({ SYNC_LIVE_STALE: "1" });
+  assert.equal(retry.status, 0, retry.stderr);
+  assert.match(await readFile(f.output, "utf8"), /changed=false\npublish=true/);
+  assert.equal(git(f.root, "--git-dir", f.remote, "rev-parse", "main"), committed);
+
+  await writeFile(f.output, "");
+  const unavailable = f.run({ SYNC_LIVE_FAIL: "1" });
+  assert.notEqual(unavailable.status, 0);
+  assert.match(unavailable.stderr, /Live product receipt returned 503/);
+  assert.equal(await readFile(f.output, "utf8"), "");
 });
 test("commit helper refuses to run in an ordinary local workspace", () => {
   const result = spawnSync(process.execPath, ["scripts/sync-product.mjs"], {
