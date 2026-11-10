@@ -2,21 +2,6 @@
 
 Validation date: 2026-11-10. This report distinguishes local checks, browser observations and hosted publication.
 
-## Interactive preview addition
-
-The `/preview/` concept tour adds device selection, light/dark palettes,
-simulated charts with pause/reduced-motion handling, exact-identity update
-selection/review, an observed-activity example and a threshold-based rule
-simulation. The existing homepage and Pages/CNAME configuration are preserved.
-
-Local production export and TypeScript checks passed. The existing 20 Node
-checks and four new model/export checks passed. An initial combined command
-inherited the build-only offline environment into sync tests; rerunning checks
-in their normal separate CI environment passed. No test assertions were weakened.
-Browser automation could not initialize in the current environment, so a new
-browser visual review is unverified. Hosted publication is recorded separately
-after the exact source revision completes the existing Pages workflow.
-
 The follow-up design, animation, Oxog branding and `og.png` review is recorded in [DESIGN_REVIEW.md](DESIGN_REVIEW.md), including the newer 80-view matrix and 11-test result.
 
 ## Local production checks

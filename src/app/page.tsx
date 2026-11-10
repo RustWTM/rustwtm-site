@@ -123,10 +123,6 @@ export default function Home() {
               Download for Windows
               <Icon name="download" size={18} />
             </a>
-            <a className="button button-ghost" href="/preview/">
-              Interactive preview
-              <Icon name="arrow" size={17} />
-            </a>
             <Link className="button button-ghost" href="/#screenshots">
               Take a closer look
               <Icon name="arrow" size={17} />
