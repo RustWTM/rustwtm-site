@@ -1,0 +1,15 @@
+{
+  "name": "RustWTM Website Sync",
+  "description": "Starts the rustwtm-site content check after product release publication or changelog changes.",
+  "url": "https://rustwtm.com",
+  "public": false,
+  "hook_attributes": {
+    "url": "https://rustwtm.com",
+    "active": false
+  },
+  "default_events": [],
+  "default_permissions": {
+    "actions": "write"
+  },
+  "request_oauth_on_install": false
+}

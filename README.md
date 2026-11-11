@@ -46,7 +46,7 @@ Import only screenshots verified against the release. `node scripts/prepare-asse
 
 ## Publication
 
-The `Build and deploy GitHub Pages` workflow runs on pushes to `main`, manual dispatch, authenticated `product-content-updated` dispatches and a five-minute scheduled check. It commits changed product data, builds that exact snapshot offline and deploys only after checks pass. Unchanged scheduled checks skip installation, build and deployment. Pull requests build and check without publication. See [automatic updates](docs/AUTOMATIC_UPDATES.md) for the active flow, optional immediate notifier and failure behavior.
+The product repository's **Update product website** workflow starts a site check directly after successful release publication, stable release-note edits and changelog pushes. The site's `Build and deploy GitHub Pages` workflow also accepts pushes to `main`, manual/legacy dispatch and a scheduled recovery check. It commits changed product data, builds that exact snapshot offline and deploys only after checks pass. Unchanged content checks skip installation, build and deployment. Pull requests build and check without publication. See [automatic updates](docs/AUTOMATIC_UPDATES.md) and [event-driven updates](docs/EVENT_UPDATES.md) for the active flow, scoped GitHub App and failure behavior.
 
 The workflow uses a clean lockfile installation, type checking, static export, integration checks, a Pages artifact and a separate deployment job. Actions are pinned to verified release SHAs. Enable **GitHub Actions** as the Pages source, set the custom domain to **rustwtm.com**, and enable HTTPS once the certificate is available.
 
