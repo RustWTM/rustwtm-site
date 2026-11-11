@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import sharp from "sharp";
 import { buildSnapshot } from "./lib/product-content.mjs";
 
 function git(cwd, ...args) {
@@ -31,6 +33,7 @@ async function setup(t) {
     "scripts/sync-product.mjs",
     "scripts/lib/product-content.mjs",
     "scripts/lib/website-media.mjs",
+    "scripts/unpack-website-media.py",
   ])
     await cp(file, path.join(seed, file));
   const repository = "Fixture/Product",
@@ -89,6 +92,11 @@ import {execFileSync} from 'node:child_process';
 const data = JSON.parse(fs.readFileSync(process.env.SYNC_FIXTURE, 'utf8'));
 globalThis.fetch = async (url, options) => {
   const target = new URL(url);
+  if (target.pathname.includes('/git/ref/tags/')) return Response.json({object:{type:'commit',sha:'a'.repeat(40)}});
+  if (target.hostname === 'github.com' && data.websiteArchive) {
+    if (options.headers?.Authorization) throw new Error('Asset credential leak');
+    return new Response(target.pathname.endsWith('.sha256') ? Buffer.from(data.websiteChecksum) : Buffer.from(data.websiteArchive,'base64'));
+  }
   if (target.pathname === '/updates.json') {
     if (target.origin !== 'https://fixture.example' || options.headers.Authorization)
       throw new Error('Live receipt must be public and use the configured domain');
@@ -128,8 +136,109 @@ globalThis.fetch = async (url, options) => {
         ...extra,
       },
     });
-  return { root, remote, seed, checkout, output, run };
+  return { root, remote, seed, checkout, output, run, fixture };
 }
+
+test("automation imports and commits a new image package atomically, then rejects a mismatched replacement", async (t) => {
+  const f = await setup(t);
+  const input = JSON.parse(await readFile(f.fixture, "utf8"));
+  const image = await sharp({ create: { width: 2, height: 2, channels: 3, background: "#213547" } })
+    .webp()
+    .toBuffer();
+  const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+  const manifest = {
+    schemaVersion: 1,
+    repositoryId: 42,
+    version: "v1.2.3",
+    sourceCommit: "a".repeat(40),
+    hero: "performance",
+    captures: ["processes", "performance", "overview"].map((id) => ({
+      id,
+      label: id,
+      title: id,
+      description: "A release fixture",
+      color: "accent",
+      width: 2,
+      height: 2,
+      path: `images/${id}.webp`,
+      sha256: hash(image),
+    })),
+  };
+  const createArchive = () => {
+    const result = spawnSync(
+      process.platform === "win32" ? "python" : "python3",
+      [
+        "-c",
+        `import json,sys,io,base64,zipfile
+d=json.load(sys.stdin); b=io.BytesIO()
+with zipfile.ZipFile(b,'w') as z:
+ z.writestr('manifest.json',json.dumps(d['manifest']))
+ for c in d['manifest']['captures']: z.writestr(c['path'],base64.b64decode(d['image']))
+sys.stdout.buffer.write(b.getvalue())`,
+      ],
+      {
+        input: JSON.stringify({ manifest, image: image.toString("base64") }),
+        timeout: 10000,
+        maxBuffer: 1024 * 1024,
+      },
+    );
+    assert.equal(result.status, 0, result.stderr?.toString());
+    return result.stdout;
+  };
+  const setAssets = async () => {
+    const archive = createArchive(),
+      checksum = `${hash(archive)}  rustwtm-website-media.zip\n`;
+    input.websiteArchive = archive.toString("base64");
+    input.websiteChecksum = checksum;
+    input.latest.assets = input.latest.assets.filter(
+      (asset) => !asset.name.includes("website-media"),
+    );
+    for (const [name, bytes] of [
+      ["rustwtm-website-media.zip", archive],
+      ["rustwtm-website-media.zip.sha256", Buffer.from(checksum)],
+    ])
+      input.latest.assets.push({
+        name,
+        size: bytes.length,
+        digest: "sha256:" + hash(bytes),
+        browser_download_url: `https://github.com/Fixture/Product/releases/download/v1.2.3/${name}`,
+      });
+    await writeFile(f.fixture, JSON.stringify(input));
+  };
+  await setAssets();
+  const first = f.run();
+  assert.equal(first.status, 0, first.stderr);
+  const committed = git(f.root, "--git-dir", f.remote, "rev-parse", "main");
+  const snapshot = JSON.parse(
+    git(f.root, "--git-dir", f.remote, "show", "main:src/data/release.json"),
+  );
+  assert.equal(snapshot.presentation.version, "v1.2.3");
+  assert.equal(snapshot.presentation.captures.length, 3);
+  for (const capture of snapshot.presentation.captures)
+    assert.ok(
+      git(
+        f.root,
+        "--git-dir",
+        f.remote,
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "main",
+        "public" + capture.file,
+      ),
+    );
+  await writeFile(f.output, "");
+  const repeat = f.run();
+  assert.equal(repeat.status, 0, repeat.stderr);
+  assert.match(await readFile(f.output, "utf8"), /publish=false/);
+  assert.equal(git(f.root, "--git-dir", f.remote, "rev-parse", "main"), committed);
+  manifest.version = "v9.9.9";
+  await setAssets();
+  const invalid = f.run();
+  assert.notEqual(invalid.status, 0);
+  assert.match(invalid.stderr, /media identity or release mismatch/);
+  assert.equal(git(f.root, "--git-dir", f.remote, "rev-parse", "main"), committed);
+});
 test("automation commits changed content once, skips unchanged work and preserves the snapshot on API failure", async (t) => {
   const f = await setup(t),
     before = git(f.root, "--git-dir", f.remote, "rev-parse", "main");
