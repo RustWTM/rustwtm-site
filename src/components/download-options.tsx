@@ -26,7 +26,8 @@ export function DownloadOptions() {
         <a
           className="text-link"
           href={
-            release.assets.find((asset) => asset.name.endsWith(".msi.sha256"))?.url ?? links.latest
+            release.assets.find((asset) => asset.name === `${installer?.name}.sha256`)?.url ??
+            links.latest
           }
         >
           SHA-256 checksum <Icon name="external" size={13} />
@@ -52,7 +53,8 @@ export function DownloadOptions() {
         <a
           className="text-link"
           href={
-            release.assets.find((asset) => asset.name.endsWith(".zip.sha256"))?.url ?? links.latest
+            release.assets.find((asset) => asset.name === `${portable?.name}.sha256`)?.url ??
+            links.latest
           }
         >
           SHA-256 checksum <Icon name="external" size={13} />

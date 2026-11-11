@@ -26,7 +26,8 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 
 - `config/product.json`: the domain, active product repository, future repository and website repository. Product URLs are derived from this file.
 - `src/data/release.json`: the verified product snapshot: stable release assets, published release notes, source changelog and a content hash. The updater uses the immutable product repository ID, bounded GitHub API reads, atomic replacement and a last-good cache. `--strict` is used by automation; ordinary local builds retain a verified cache during API outages.
-- `src/data/gallery.ts` and `src/data/screenshots.json`: gallery content and screenshot provenance, including the exact product release tag, commit and input hashes.
+- `src/data/release.json.presentation`: the exact-release gallery, hero image, dimensions and per-image hashes. `src/data/gallery.ts` defines its UI contract.
+- `src/lib/release-highlights.ts`: deterministic homepage cards derived from the published release notes, preserving the full selected bullet context.
 - `public/brand/`: original vector icon plus outlined light/dark wordmarks. Original icon geometry is preserved.
 - `public/screenshots/`: optimized, full-aspect WebP product captures. Illustrative fixture data is identified on the page.
 - `public/fonts/`: self-hosted variable Latin fonts and their licenses. Only Space Grotesk and JetBrains Mono are loaded. `--font-quicksand` is defined as a reserved design token, without adding another font download.
@@ -40,9 +41,11 @@ The product repository is now [`RustWTM/RustWTM`](https://github.com/RustWTM/Rus
 
 The immutable `repositoryId` in `config/product.json` follows owner/name transfers of the same product automatically. To select an entirely different product, explicitly update both its ID and fallback repository name. Product links derive from the verified snapshot. `targetRepository` is historical information only.
 
-## Refresh media
+## Automatic release presentation
 
-Import only screenshots verified against the release. `node scripts/prepare-assets.mjs <product-checkout> <release-tag>` reads selected PNGs from the tagged Git tree. When tracked captures have not changed, use `node scripts/import-ci-captures.mjs <product-checkout> <release-tag> <run-id>` to import reviewed renders from a successful exact-source CI run. The importer verifies the artifact archive digest and preserves earlier version labels on unchanged captures. Each capture records its own version, source and SHA-256. Check the renders and captions before publication. No product source files are modified.
+Every future product release renders its own interface in the product's Windows CI and publishes `rustwtm-website-media.zip` with a SHA-256 sidecar. The website updater validates the official tag commit, archive digest, each image hash and bounded manifest before importing content-addressed WebP files. All visible screenshots, the hero, their version captions and the gallery entries come from the same atomic product snapshot. Homepage cards follow the stable release's notes automatically; unreleased entries are excluded.
+
+The required media contract begins at v0.30.0. An incomplete or mismatched package stops automatic publication and preserves the last complete website. No visitor telemetry is captured; the actual application renderer uses fixture data. See [automatic updates](docs/AUTOMATIC_UPDATES.md) for the producer and consumer contract.
 
 ## Publication
 

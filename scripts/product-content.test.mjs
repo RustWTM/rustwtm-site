@@ -116,6 +116,39 @@ test("changelog headings inside code fences are not treated as releases", () => 
   assert.match(entries.get("unreleased"), /9.9.9/);
   assert.equal(entries.get("v1.2.3"), "A release.");
 });
+
+test("presentation changes invalidate the content hash and mismatched versions are rejected", () => {
+  const data = fixture();
+  const presentation = {
+    version: data.latest.tag_name,
+    sourceCommit: "a".repeat(40),
+    archiveSha256: "b".repeat(64),
+    hero: "performance",
+    captures: [],
+  };
+  const first = buildSnapshot({ ...data, presentation, now: "2026-01-01T00:00:00Z" });
+  assert.deepEqual(
+    buildSnapshot({ ...data, presentation, previous: first, now: "2026-02-01T00:00:00Z" }),
+    first,
+  );
+  assert.notEqual(
+    buildSnapshot({ ...data, presentation: { ...presentation, archiveSha256: "c".repeat(64) } })
+      .contentHash,
+    first.contentHash,
+  );
+  assert.throws(
+    () => buildSnapshot({ ...data, presentation: { ...presentation, version: "v9.9.9" } }),
+    /Presentation does not match/,
+  );
+  assert.throws(
+    () =>
+      validCachedSnapshot(
+        { ...first, presentation: { ...presentation, version: "v9.9.9" } },
+        { repositoryId: 42 },
+      ),
+    /Cached presentation does not match/,
+  );
+});
 test("API read failures and oversized bodies are bounded", async () => {
   await assert.rejects(
     fetchJson("https://api.github.com/test", {

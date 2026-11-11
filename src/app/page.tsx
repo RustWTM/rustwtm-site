@@ -14,7 +14,7 @@ import {
   release,
   releaseNotesHref,
 } from "@/lib/product";
-import screenshots from "@/data/screenshots.json";
+import { releaseHighlights } from "@/lib/release-highlights";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 const capabilities = [
   {
@@ -72,30 +72,10 @@ const faq = [
     `The desktop interface and notifications are available in ${interfaceLanguages} languages, including English, Türkçe, Deutsch, Español, 日本語 and 简体中文. The default follows Windows, with English as a fallback. Choose a language in Settings → This window.`,
   ],
 ];
-const highlights = [
-  {
-    icon: "settings",
-    title: "Start on your terms",
-    text: "A five-step quick setup brings language, appearance, process layout and tray preferences together. Review before applying, or skip and keep your existing choices.",
-  },
-  {
-    icon: "monitor",
-    title: "Make the workspace yours",
-    text: "Show readable process descriptions, choose table separators independently, and right-click a process header to sort, fit widths or change your column layout.",
-  },
-  {
-    icon: "file",
-    title: "Get to the answer faster",
-    text: "Search and filter startup apps, copy details where you find them, and reach process diagnostics through compact context menus that fit your window.",
-  },
-] as const;
-const highlightsVersion = "v0.30.0";
-const captureMetadata = Object.fromEntries(
-  screenshots.captures.map(({ name, version, width, height }) => [
-    name,
-    { version, width, height },
-  ]),
-);
+const notes = release.history.find((item) => item.version === release.version);
+const highlights = releaseHighlights(notes?.body || notes?.changelog || "");
+const gallery = release.presentation.captures;
+const heroCapture = gallery.find((capture) => capture.id === release.presentation.hero)!;
 export default function Home() {
   return (
     <main id="main">
@@ -183,7 +163,9 @@ export default function Home() {
               </span>
             </div>
             <ScreenshotLightbox
-              src="/screenshots/performance.webp"
+              src={heroCapture.file}
+              width={heroCapture.width}
+              height={heroCapture.height}
               alt="RustWTM Performance workspace with CPU, memory, GPU, disk and network charts and example data"
               priority
             />
@@ -192,7 +174,7 @@ export default function Home() {
             <span className="mono">
               <span className="status-dot" />A REAL WORKSPACE. A WIDER VIEW.
             </span>
-            <span>Actual app capture · {captureMetadata.performance.version} · Example data</span>
+            <span>Actual app capture · {heroCapture.version} · Example data</span>
           </div>
           <div className="hero-corner-mark" aria-hidden="true">
             01 — SYSTEM CLARITY
@@ -304,17 +286,18 @@ export default function Home() {
       <section className="container release-spotlight" aria-labelledby="release-spotlight-title">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">INTRODUCED IN {highlightsVersion}</span>
-            <h2 id="release-spotlight-title">A smoother start. A workspace that fits.</h2>
+            <span className="eyebrow">WHAT’S NEW IN {release.version}</span>
+            <h2 id="release-spotlight-title">The latest, in focus.</h2>
           </div>
-          <a className="text-link" href={`${links.releases}/tag/${highlightsVersion}`}>
-            Read the {highlightsVersion} release notes <Icon name="external" size={14} />
+          <a className="text-link" href={releaseNotesHref}>
+            Read the {release.version} release notes <Icon name="arrow" size={14} />
           </a>
         </div>
         <div className="toolbox-grid">
-          {highlights.map(({ icon, title, text }) => (
-            <article key={title}>
+          {highlights.map(({ icon, kind, title, text }, index) => (
+            <article key={`${kind}-${index}`}>
               <Icon name={icon} size={24} />
+              <span className="eyebrow release-kind">{kind}</span>
               <h3>{title}</h3>
               <p>{text}</p>
             </article>
@@ -338,7 +321,7 @@ export default function Home() {
               Explore the real interface, screen by screen.
             </p>
           </div>
-          <Gallery captures={captureMetadata} />
+          <Gallery screens={gallery} />
         </div>
       </section>
       <section className="section container protection-section" id="protection">

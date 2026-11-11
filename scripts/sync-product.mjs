@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { appendFile, readFile } from "node:fs/promises";
+import { appendFile, readFile, stat } from "node:fs/promises";
 import { readJsonResponse } from "./lib/product-content.mjs";
 if (process.env.GITHUB_ACTIONS !== "true")
   throw new Error("This commit helper is restricted to an isolated GitHub Actions checkout.");
@@ -42,11 +42,13 @@ for (let attempt = 1; attempt <= 3; attempt++) {
   git(["switch", "-C", "product-content-sync", "FETCH_HEAD"]);
   const refreshed = spawnSync(process.execPath, ["scripts/refresh-release.mjs", "--strict"], {
     stdio: "inherit",
-    timeout: 90000,
+    timeout: 180000,
   });
   if (refreshed.status !== 0)
     throw new Error("Product synchronization failed; no snapshot was published.");
   git(["add", "--", "src/data/release.json"]);
+  if (await stat("public/screenshots/releases").catch(() => null))
+    git(["add", "--", "public/screenshots/releases"]);
   const changed = git(["diff", "--cached", "--quiet"], true).status === 1;
   if (changed || force) {
     git(["config", "user.name", "github-actions[bot]"]);

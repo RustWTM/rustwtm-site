@@ -1,17 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
-import { gallery } from "@/data/gallery";
+import type { GalleryScreen } from "@/data/gallery";
 import { Icon } from "./icons";
 import { ScreenshotLightbox } from "./lightbox";
-export function Gallery({
-  captures,
-}: {
-  captures: Record<string, { version: string; width: number; height: number }>;
-}) {
+export function Gallery({ screens: gallery }: { screens: GalleryScreen[] }) {
   const [active, setActive] = useState(0);
   const tabs = useRef<HTMLDivElement>(null);
   const item = gallery[active];
-  const capture = captures[item.id];
+  const capture = item;
   function key(event: React.KeyboardEvent, index: number) {
     let next = index;
     if (event.key === "ArrowRight") next = (index + 1) % gallery.length;
@@ -48,7 +44,7 @@ export function Gallery({
       <div id="screen-panel" role="tabpanel" aria-labelledby={`tab-${item.id}`} tabIndex={0}>
         <div className="gallery-media" key={item.id}>
           <ScreenshotLightbox
-            src={`/screenshots/${item.id}.webp`}
+            src={item.file}
             alt={`RustWTM ${item.label} workspace with example data`}
             width={capture.width}
             height={capture.height}

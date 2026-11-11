@@ -1,5 +1,6 @@
 import { readFile, writeFile, rename, unlink } from "node:fs/promises";
 import { buildSnapshot, fetchJson, validCachedSnapshot } from "./lib/product-content.mjs";
+import { refreshPresentation } from "./lib/website-media.mjs";
 const config = JSON.parse(
   await readFile(new URL("../config/product.json", import.meta.url), "utf8"),
 );
@@ -25,6 +26,16 @@ if (process.env.RUSTWTM_CONTENT_OFFLINE === "1") {
       `${base}/contents/CHANGELOG.md?ref=${encodeURIComponent(identity.default_branch)}`,
       options,
     );
+    // Validate source and package URLs before downloading any presentation data.
+    buildSnapshot({ identity, latest, releases, changelog, expectedId: config.repositoryId });
+    const presentation = await refreshPresentation({
+      latest,
+      identity,
+      base,
+      options,
+      previous: cached?.presentation,
+      requiredFrom: config.websiteMediaRequiredFrom,
+    });
     const snapshot = buildSnapshot({
       identity,
       latest,
@@ -32,6 +43,7 @@ if (process.env.RUSTWTM_CONTENT_OFFLINE === "1") {
       changelog,
       previous: cached,
       expectedId: config.repositoryId,
+      presentation,
     });
     const bytes = JSON.stringify(snapshot, null, 2) + "\n";
     const existing = cached ? JSON.stringify(cached, null, 2) + "\n" : "";

@@ -30,6 +30,7 @@ async function setup(t) {
     "scripts/refresh-release.mjs",
     "scripts/sync-product.mjs",
     "scripts/lib/product-content.mjs",
+    "scripts/lib/website-media.mjs",
   ])
     await cp(file, path.join(seed, file));
   const repository = "Fixture/Product",

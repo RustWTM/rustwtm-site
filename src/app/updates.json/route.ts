@@ -9,6 +9,12 @@ export function GET() {
     releaseUrl: release.url,
     contentHash: release.contentHash,
     changelogSha: release.changelog.sha,
+    presentation: {
+      version: release.presentation.version,
+      sourceCommit: release.presentation.sourceCommit,
+      archiveSha256: release.presentation.archiveSha256,
+      captures: release.presentation.captures.length,
+    },
     updatedAt: release.checkedAt,
   });
 }

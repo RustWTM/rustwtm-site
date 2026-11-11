@@ -31,7 +31,7 @@ The local product checkout matches the released HEAD but has concurrent uncommit
 
 Original `assets/logo.svg` is retained verbatim: 256-unit gauge, rounded slate background, green `#4fc778` to copper `#de783d` arc, white needle. No tracing or geometric redesign was needed. Website wordmarks use outlined Space Grotesk letterforms beside this icon. Light-mode web accents are darkened for contrast.
 
-The initial design used captures from v0.27.2. The current release tag, exact source commit, per-source SHA-256 values and original dimensions are recorded in `src/data/screenshots.json`. Gallery captions identify the capture version and example data. All converted images preserve full aspect ratio.
+The initial design used captures from v0.27.2. Current images are generated automatically by the product's exact-release media workflow. Their release tag, exact source commit, per-image SHA-256 values and original dimensions are recorded in `src/data/release.json.presentation`. Gallery captions identify the capture version and example data. All converted images preserve full aspect ratio.
 
 ## Design references
 

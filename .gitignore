@@ -3,5 +3,6 @@ node_modules/
 out/
 .temp_files/
 *.tsbuildinfo
+__pycache__/
 .env*
 !.env.example

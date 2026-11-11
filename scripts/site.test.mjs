@@ -5,23 +5,47 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import { createHash } from "node:crypto";
 import sharp from "sharp";
-import { gallery } from "../src/data/gallery.ts";
 const routes = ["", "download", "docs", "privacy", "brand", "changelog"];
 const output = path.resolve("out");
 
+test("download checksums stay paired with the installer and portable archive when media ZIPs exist", async () => {
+  const release = JSON.parse(await readFile("src/data/release.json", "utf8"));
+  const installer = release.assets.find((asset) => asset.name.endsWith("-x64.msi"));
+  const portable = release.assets.find(
+    (asset) => asset.name === "rustwtm-x86_64-pc-windows-msvc.zip",
+  );
+  for (const route of ["", "download"]) {
+    const html = await readFile(path.join(output, route, "index.html"), "utf8");
+    const checksums = [...html.matchAll(/href="([^"]+\.sha256)"/g)].map((match) => match[1]);
+    assert.deepEqual(checksums, [installer.url + ".sha256", portable.url + ".sha256"]);
+  }
+});
+
 test("every gallery view has a versioned capture and matching exported image dimensions", async () => {
-  const manifest = JSON.parse(await readFile("src/data/screenshots.json", "utf8"));
-  const captures = new Map(manifest.captures.map((capture) => [capture.name, capture]));
+  const release = JSON.parse(await readFile("src/data/release.json", "utf8"));
+  const manifest = release.presentation;
+  const captures = new Map(manifest.captures.map((capture) => [capture.id, capture]));
   assert.equal(captures.size, manifest.captures.length, "unique capture identities");
-  for (const view of gallery) {
-    const capture = captures.get(view.id);
-    assert.ok(capture, `Missing provenance for ${view.id}`);
+  for (const capture of manifest.captures) {
+    assert.equal(
+      capture.version,
+      release.version,
+      "All visible captures belong to the stable release",
+    );
     assert.match(capture.version, /^v\d+\.\d+\.\d+$/);
     assert.match(capture.commit, /^[a-f\d]{40}$/);
-    const image = await sharp(path.join(output, "screenshots", `${view.id}.webp`)).metadata();
-    assert.equal(image.width, capture.width, `${view.id}: original width`);
-    assert.equal(image.height, capture.height, `${view.id}: original height`);
+    const file = path.join(output, capture.file);
+    const image = await sharp(file).metadata();
+    assert.equal(image.width, capture.width, `${capture.id}: original width`);
+    assert.equal(image.height, capture.height, `${capture.id}: original height`);
+    assert.equal(
+      createHash("sha256")
+        .update(await readFile(file))
+        .digest("hex"),
+      capture.sha256,
+    );
   }
 });
 test("both palettes keep text and primary buttons above WCAG AA contrast", async () => {

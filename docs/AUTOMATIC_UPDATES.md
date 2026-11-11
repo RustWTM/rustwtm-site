@@ -6,7 +6,7 @@ The product repository now requests a website update directly after release publ
 
 1. The product's **Update product website** workflow requests a content check on this repository's main branch. Its primary release trigger is successful completion of the **Release** publisher, which also works when `GITHUB_TOKEN` publishes the release. Stable release publication/editing and changelog pushes provide additional triggers. The five-minute GitHub schedule remains a fallback and can be delayed.
 2. The sync job resolves the product through its immutable GitHub repository ID, then fetches the latest stable release, recent published releases and the default branch’s `CHANGELOG.md`.
-3. The updater validates the repository identity, official download origins, expected x64 MSI/ZIP and their checksum companions. It builds one atomic snapshot at `src/data/release.json`.
+3. The updater validates the repository identity, official download origins, expected x64 MSI/ZIP and their checksum companions. For v0.30.0 and later it also requires the release's website media package and checksum, resolves the real tag commit, and verifies the bounded image manifest and individual image hashes. It stages content-addressed images before replacing the one atomic snapshot at `src/data/release.json`.
    The snapshot and public receipt carry schema version 1; legacy snapshots can be refreshed, while unknown future cache schemas are rejected.
 4. A content hash ignores polling time and download counters. If the source is unchanged, the job compares the committed hash with the live `/updates.json` receipt. A match skips the build; a mismatch retries publication even when the snapshot is already committed. An unavailable or invalid receipt fails the check and is retried at the next poll.
 5. Changed content is committed by the website’s own scoped `GITHUB_TOKEN`. The same workflow builds that exact commit, runs the checks and publishes it with GitHub Pages. The token’s push does not recursively start another build.
@@ -18,12 +18,16 @@ The publisher retries non-fast-forward pushes against fresh main, regenerating t
 
 - Version badges, release date, MSI/portable URLs, file sizes, checksum links and structured product version metadata.
 - The official release-note history on `/changelog/`.
+- The homepage's latest-version highlight cards, derived from the published stable release notes without inventing marketing claims.
+- The hero image, entire screenshot gallery, original image dimensions and capture-version captions from the exact-release website media package.
 - A separate **In development** section from `[Unreleased]`. These entries are never advertised as features already available in the stable release.
 - A changed released-version entry in `CHANGELOG.md`, shown alongside its GitHub release notes when the two sources differ.
 - Canonical product links after an owner/name transfer of the same repository ID.
 - `/updates.json`, a small public provenance receipt with the version, source hash and changelog SHA.
 
-The system does not generate new marketing claims or replace screenshots based on an unreleased commit. Screenshots retain explicit source/version captions until reviewed assets are imported.
+The system never promotes an unreleased commit as a stable screenshot. Product release CI renders every navigation page from the exact tag with fixture data, converts the captures into WebP and publishes a non-expiring release asset together with its checksum. New navigation entries are discovered from the product's own navigation enum; their renders are required. Existing screenshot labels are replaced only after the whole matching package validates.
+
+The product's reusable **Website media** workflow is a prerequisite of future `Release` publication and participates in provenance generation. Its manual mode backfills an already published stable version without replacing installer binaries; completion triggers the existing App notifier. Failed or missing image production stops publication rather than silently retaining mislabeled images. The site consumer uses public release assets and requires no additional cross-repository permissions.
 
 The earlier schedule-triggered runs [42949721838](https://github.com/RustWTM/rustwtm-site/actions/runs/42949721838) and [43003738441](https://github.com/RustWTM/rustwtm-site/actions/runs/43003738441) arrived hours apart. Direct product notifications remove that timer from the normal release path. GitHub runner queues and build/deployment time still apply; this is not a fixed publication-time guarantee.
 

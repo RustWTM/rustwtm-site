@@ -42,6 +42,17 @@ export function validCachedSnapshot(value, config) {
     throw new Error("Unsupported cached snapshot schema");
   if (!value || !stableTag.test(value.version) || !Array.isArray(value.assets))
     throw new Error("Invalid cached release snapshot");
+  if (
+    value.presentation &&
+    (value.presentation.version !== value.version ||
+      !/^[a-f\d]{40}$/.test(value.presentation.sourceCommit) ||
+      !/^[a-f\d]{64}$/.test(value.presentation.archiveSha256) ||
+      !Array.isArray(value.presentation.captures) ||
+      value.presentation.captures.length < 3 ||
+      value.presentation.captures.length > 40 ||
+      !value.presentation.captures.some((capture) => capture.id === value.presentation.hero))
+  )
+    throw new Error("Cached presentation does not match the stable release");
   const sameId =
     Number.isSafeInteger(config.repositoryId) && value.repositoryId === config.repositoryId;
   if (config.repositoryId && value.repositoryId && !sameId)
@@ -61,6 +72,7 @@ export function buildSnapshot({
   previous,
   now = new Date().toISOString(),
   expectedId,
+  presentation,
 }) {
   if (
     !Number.isSafeInteger(identity.id) ||
@@ -71,6 +83,13 @@ export function buildSnapshot({
   const repository = identity.full_name;
   if (!latest || latest.draft || latest.prerelease || !stableTag.test(latest.tag_name))
     throw new Error("Not a stable release");
+  if (
+    presentation &&
+    (presentation.version !== latest.tag_name ||
+      !/^[a-f\d]{40}$/.test(presentation.sourceCommit) ||
+      !/^[a-f\d]{64}$/.test(presentation.archiveSha256))
+  )
+    throw new Error("Presentation does not match the stable release");
   const assets = latest.assets
     .filter((asset) => /\.msi$|\.zip$|\.sha256$/.test(asset.name))
     .map((asset) => {
@@ -132,6 +151,7 @@ export function buildSnapshot({
       url: repositoryUrl(changelog.html_url, repository, "blob/"),
       unreleased: entries.get("unreleased") ?? "",
     },
+    ...(presentation ? { presentation } : {}),
   };
   const contentHash = createHash("sha256").update(JSON.stringify(content)).digest("hex");
   return {
