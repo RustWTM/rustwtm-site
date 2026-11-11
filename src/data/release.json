@@ -175,10 +175,10 @@
     }
   ],
   "changelog": {
-    "sha": "a30fc186c36dbee237ad3d2ad5dc844c587d20f3",
+    "sha": "133f234991d70edb97547e68bb2b26d6bb489dec",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": "### Changed\n\n- Refresh the product website after successful release publication, release-note\n  edits and changelog changes through a repository-scoped GitHub App connection."
+    "unreleased": "### Changed\n\n- Build a versioned website image package from the exact release's fixture-rendered\n  interface, and publish it with the installers so homepage highlights and the\n  screenshot gallery can follow new stable releases automatically.\n- Refresh the product website after successful release publication, release-note\n  edits and changelog changes through a repository-scoped GitHub App connection."
   },
-  "checkedAt": "2026-11-11T15:23:26.904Z",
-  "contentHash": "c5feaf6325bb25ac124e6dbac9fb844008a532404ac0b0bcb098becdcc4e4e65"
+  "checkedAt": "2026-11-11T16:07:27.666Z",
+  "contentHash": "14a45947df0bc23081f8970f6258d4283cf33503a59973e1054ff38b4b4329f8"
 }
