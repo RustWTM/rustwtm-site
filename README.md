@@ -17,6 +17,7 @@ For a production preview:
 npm run typecheck
 npm run build
 npm run check
+npm run check:release-transition
 npm run preview
 ```
 
@@ -37,7 +38,7 @@ Open `http://localhost:4173`. The preview serves `out/`, including a real 404 re
 
 ## Update product links after a repository move
 
-The product repository is now [`RustWTM/RustWTM`](https://github.com/RustWTM/RustWTM). The committed release snapshot was refreshed to v0.28.0 after verifying its MSI, portable ZIP and checksum assets on 10 November 2026. Gallery captions continue to identify the actual UI version in each existing capture.
+The product repository is [`RustWTM/RustWTM`](https://github.com/RustWTM/RustWTM). The verified snapshot owns the current stable version, download packages, release notes and exact-version gallery; inspect `src/data/release.json` or the public `/updates.json` receipt for its current identity.
 
 The immutable `repositoryId` in `config/product.json` follows owner/name transfers of the same product automatically. To select an entirely different product, explicitly update both its ID and fallback repository name. Product links derive from the verified snapshot. `targetRepository` is historical information only.
 
@@ -46,6 +47,8 @@ The immutable `repositoryId` in `config/product.json` follows owner/name transfe
 Every future product release renders its own interface in the product's Windows CI and publishes `rustwtm-website-media.zip` with a SHA-256 sidecar. The website updater validates the official tag commit, archive digest, each image hash and bounded manifest before importing content-addressed WebP files. All visible screenshots, the hero, their version captions and the gallery entries come from the same atomic product snapshot. Homepage cards follow the stable release's notes automatically; unreleased entries are excluded.
 
 The required media contract begins at v0.30.0. An incomplete or mismatched package stops automatic publication and preserves the last complete website. No visitor telemetry is captured; the actual application renderer uses fixture data. See [automatic updates](docs/AUTOMATIC_UPDATES.md) for the producer and consumer contract.
+
+`npm run check:release-transition` rehearses the next minor release in an isolated local Git repository. It changes every image, supplies explicit test notes, runs the real updater and two production builds, and verifies the exported page and every image over HTTP. Missing, old-version, wrong-commit and corrupted packages must preserve the complete previous release. Publication retries and no-change checks are also exercised. CI runs this gate before uploading the Pages artifact. Test notes and watermarked images never enter the real snapshot or public release assets. Evidence is retained under `.temp_files/release-rehearsal-*/`; see [the release rehearsal report](docs/RELEASE_REHEARSAL.md) for the verification boundary.
 
 ## Publication
 
