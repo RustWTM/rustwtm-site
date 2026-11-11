@@ -3,10 +3,15 @@ import { useRef, useState } from "react";
 import { gallery } from "@/data/gallery";
 import { Icon } from "./icons";
 import { ScreenshotLightbox } from "./lightbox";
-export function Gallery({ captureVersion }: { captureVersion: string }) {
+export function Gallery({
+  captures,
+}: {
+  captures: Record<string, { version: string; width: number; height: number }>;
+}) {
   const [active, setActive] = useState(0);
   const tabs = useRef<HTMLDivElement>(null);
   const item = gallery[active];
+  const capture = captures[item.id];
   function key(event: React.KeyboardEvent, index: number) {
     let next = index;
     if (event.key === "ArrowRight") next = (index + 1) % gallery.length;
@@ -45,6 +50,8 @@ export function Gallery({ captureVersion }: { captureVersion: string }) {
           <ScreenshotLightbox
             src={`/screenshots/${item.id}.webp`}
             alt={`RustWTM ${item.label} workspace with example data`}
+            width={capture.width}
+            height={capture.height}
             priority={false}
           />
         </div>
@@ -58,7 +65,7 @@ export function Gallery({ captureVersion }: { captureVersion: string }) {
             <Icon name="monitor" size={15} />
             Actual application captures
             <br />
-            {captureVersion} UI · Example data
+            {capture.version} UI · Example data
           </span>
         </div>
       </div>

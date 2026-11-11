@@ -8,6 +8,22 @@ export const gallery = [
     color: "cpu",
   },
   {
+    id: "quick-setup",
+    label: "Quick setup",
+    title: "Make yourself at home. In five steps.",
+    description:
+      "Review language, appearance, process layout, tray readouts and refresh preferences in one place. Edit a section before applying, or skip setup to preserve your current settings.",
+    color: "accent",
+  },
+  {
+    id: "column-layouts",
+    label: "Column layouts",
+    title: "Keep the columns that answer your question.",
+    description:
+      "Choose and arrange process columns, then reuse the order across List, Tree and Apps. Header menus also offer sorting, width fitting and display options.",
+    color: "cpu",
+  },
+  {
     id: "processes-light",
     label: "Light theme",
     title: "Your workspace. In a different light.",

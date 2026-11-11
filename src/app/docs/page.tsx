@@ -31,12 +31,12 @@ const guides = [
   },
   {
     title: "Process workspace",
-    text: "List, Tree and Apps views, the adaptive inspector and stable-row behavior.",
+    text: "List, Tree and Apps views, readable process descriptions, contextual actions and the adaptive inspector.",
     path: "docs/process-workspace.md",
   },
   {
     title: "Column layouts",
-    text: "Choose profiles, reorder columns and keep your preferred process workspace.",
+    text: "Choose profiles, reorder columns, fit widths and use the process header menus.",
     path: "docs/process-columns.md",
   },
   {
@@ -56,7 +56,7 @@ const guides = [
   },
   {
     title: "Display preferences",
-    text: "Appearance, scale, compact layouts, charts and remembered settings.",
+    text: "Five-step quick setup, appearance, table separators, scale, charts and reduced motion.",
     path: "docs/display-preferences.md",
   },
   {
@@ -114,19 +114,26 @@ export default function Docs() {
                 </Link>
               </article>
               <article>
-                <h3>Start with the system overview.</h3>
+                <h3>Review your quick setup.</h3>
                 <p>
-                  Check resource gauges and busy apps, then open Processes for a searchable list,
-                  process tree or grouped Apps view. Pause process-list updates with F6 to inspect a
-                  stable snapshot while monitoring continues.
+                  On first use and after a version change, a skippable five-step setup lets you
+                  review language, appearance, process layout, tray readouts and refresh
+                  preferences.
+                  <strong> Apply and finish</strong> saves your reviewed choices;
+                  <strong> Skip setup</strong> keeps the existing settings. Reopen it from Settings
+                  → This window → Quick setup.
                 </p>
+                <a href={docs("docs/display-preferences.md")}>
+                  Quick setup & display preferences <Icon name="external" size={14} />
+                </a>
               </article>
               <article>
                 <h3>Review what protection would do.</h3>
                 <p>
                   In the default dry-run mode, the service logs its automatic decisions. Read
                   Events, adjust the configuration and review exclusions before turning on
-                  enforcement.
+                  enforcement. Explore Overview and Processes to inspect your system; F6 pauses
+                  process-list updates while monitoring continues.
                 </p>
               </article>
             </div>

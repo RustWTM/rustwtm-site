@@ -25,6 +25,8 @@ The publisher retries non-fast-forward pushes against fresh main, regenerating t
 
 The system does not generate new marketing claims or replace screenshots based on an unreleased commit. Screenshots retain explicit source/version captions until reviewed assets are imported.
 
+Actual schedule-triggered runs are recorded in Actions, including runs [42949721838](https://github.com/RustWTM/rustwtm-site/actions/runs/42949721838) and [43003738441](https://github.com/RustWTM/rustwtm-site/actions/runs/43003738441). The observed delivery has been much less frequent than the requested five-minute cadence. The timer is enabled, but this deployment cannot promise five-minute freshness from GitHub's scheduler. Manual dispatch uses the same updater when a newly published release needs immediate publication.
+
 ## Manual and event-driven entry points
 
 Run **Build and deploy GitHub Pages** from Actions for a forced publication. Select **Deploy only if product content changed or the live site is behind** to run the same check as the schedule.

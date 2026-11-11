@@ -75,19 +75,22 @@ export default function Download() {
               </p>
             </article>
             <article>
-              <h3>Look around before changing anything.</h3>
+              <h3>Review your quick setup.</h3>
               <p>
-                Open Overview, Processes and Performance. The service starts in{" "}
-                <strong>dry-run</strong>: automatic decisions are logged without applying their
-                process changes. <strong>Manual GUI and CLI commands still execute.</strong>
+                The five-step setup appears on first use and once after a version change. Review
+                your language, appearance, process and tray preferences before applying. You can
+                skip it to keep your settings and reopen it from Settings → This window.
               </p>
             </article>
             <article>
               <h3>Review Events. Then choose your protection.</h3>
               <p>
-                Inspect the event log and validate your rules. Use an elevated window to switch
-                Settings from dry-run to enforcing. Check exemptions, foreground protection and app
-                budgets for your workloads.
+                The service starts in <strong>dry-run</strong>: automatic decisions are logged
+                without applying process changes.{" "}
+                <strong>Manual GUI and CLI commands still execute.</strong> Inspect the event log
+                and validate your rules. Use an elevated window to switch Settings from dry-run to
+                enforcing. Check exemptions, foreground protection and app budgets for your
+                workloads.
               </p>
               <Link href="/docs/#protection">
                 Understand the working modes <Icon name="arrow" size={14} />

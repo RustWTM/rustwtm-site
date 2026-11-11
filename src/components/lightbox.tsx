@@ -5,10 +5,14 @@ export function ScreenshotLightbox({
   src,
   alt,
   priority = false,
+  width = 1440,
+  height = 1000,
 }: {
   src: string;
   alt: string;
   priority?: boolean;
+  width?: number;
+  height?: number;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -22,8 +26,8 @@ export function ScreenshotLightbox({
       >
         <img
           src={src}
-          width="1440"
-          height="1000"
+          width={width}
+          height={height}
           alt={alt}
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}

@@ -5,8 +5,25 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import sharp from "sharp";
+import { gallery } from "../src/data/gallery.ts";
 const routes = ["", "download", "docs", "privacy", "brand", "changelog"];
 const output = path.resolve("out");
+
+test("every gallery view has a versioned capture and matching exported image dimensions", async () => {
+  const manifest = JSON.parse(await readFile("src/data/screenshots.json", "utf8"));
+  const captures = new Map(manifest.captures.map((capture) => [capture.name, capture]));
+  assert.equal(captures.size, manifest.captures.length, "unique capture identities");
+  for (const view of gallery) {
+    const capture = captures.get(view.id);
+    assert.ok(capture, `Missing provenance for ${view.id}`);
+    assert.match(capture.version, /^v\d+\.\d+\.\d+$/);
+    assert.match(capture.commit, /^[a-f\d]{40}$/);
+    const image = await sharp(path.join(output, "screenshots", `${view.id}.webp`)).metadata();
+    assert.equal(image.width, capture.width, `${view.id}: original width`);
+    assert.equal(image.height, capture.height, `${view.id}: original height`);
+  }
+});
 test("both palettes keep text and primary buttons above WCAG AA contrast", async () => {
   const css = await readFile("src/app/globals.css", "utf8");
   const blocks = [

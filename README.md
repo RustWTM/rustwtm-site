@@ -42,7 +42,7 @@ The immutable `repositoryId` in `config/product.json` follows owner/name transfe
 
 ## Refresh media
 
-Import only screenshots verified against the release. `node scripts/prepare-assets.mjs <product-checkout> <release-tag>` reads the selected PNGs directly from the tagged Git tree, converts them to WebP and records source hashes. Check the renders and captions when updating media. No product source files are modified.
+Import only screenshots verified against the release. `node scripts/prepare-assets.mjs <product-checkout> <release-tag>` reads selected PNGs from the tagged Git tree. When tracked captures have not changed, use `node scripts/import-ci-captures.mjs <product-checkout> <release-tag> <run-id>` to import reviewed renders from a successful exact-source CI run. The importer verifies the artifact archive digest and preserves earlier version labels on unchanged captures. Each capture records its own version, source and SHA-256. Check the renders and captions before publication. No product source files are modified.
 
 ## Publication
 

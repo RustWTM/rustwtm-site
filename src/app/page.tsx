@@ -74,22 +74,28 @@ const faq = [
 ];
 const highlights = [
   {
-    icon: "cpu",
-    title: "Look closer at each device",
-    text: "Inspect NVMe drive health, GPU engines and memory, and per-device charts. RustWTM shows which readings your hardware can provide.",
+    icon: "settings",
+    title: "Start on your terms",
+    text: "A five-step quick setup brings language, appearance, process layout and tray preferences together. Review before applying, or skip and keep your existing choices.",
   },
   {
-    icon: "activity",
-    title: "Replay a slowdown",
-    text: "Look back at recent resource samples, the apps behind them and any protection actions. Edit and preview process rules before applying them.",
+    icon: "monitor",
+    title: "Make the workspace yours",
+    text: "Show readable process descriptions, choose table separators independently, and right-click a process header to sort, fit widths or change your column layout.",
   },
   {
-    icon: "box",
-    title: "Review app updates",
-    text: "See installed desktop and Microsoft Store apps. Optional WinGet discovery lets you review each update before launching its installer.",
+    icon: "file",
+    title: "Get to the answer faster",
+    text: "Search and filter startup apps, copy details where you find them, and reach process diagnostics through compact context menus that fit your window.",
   },
 ] as const;
-const highlightsVersion = "v0.29.0";
+const highlightsVersion = "v0.30.0";
+const captureMetadata = Object.fromEntries(
+  screenshots.captures.map(({ name, version, width, height }) => [
+    name,
+    { version, width, height },
+  ]),
+);
 export default function Home() {
   return (
     <main id="main">
@@ -186,7 +192,7 @@ export default function Home() {
             <span className="mono">
               <span className="status-dot" />A REAL WORKSPACE. A WIDER VIEW.
             </span>
-            <span>Actual app capture · {screenshots.version} · Example data</span>
+            <span>Actual app capture · {captureMetadata.performance.version} · Example data</span>
           </div>
           <div className="hero-corner-mark" aria-hidden="true">
             01 — SYSTEM CLARITY
@@ -299,7 +305,7 @@ export default function Home() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">INTRODUCED IN {highlightsVersion}</span>
-            <h2 id="release-spotlight-title">More ways to find out what happened.</h2>
+            <h2 id="release-spotlight-title">A smoother start. A workspace that fits.</h2>
           </div>
           <a className="text-link" href={`${links.releases}/tag/${highlightsVersion}`}>
             Read the {highlightsVersion} release notes <Icon name="external" size={14} />
@@ -332,7 +338,7 @@ export default function Home() {
               Explore the real interface, screen by screen.
             </p>
           </div>
-          <Gallery captureVersion={screenshots.version} />
+          <Gallery captures={captureMetadata} />
         </div>
       </section>
       <section className="section container protection-section" id="protection">
