@@ -20,6 +20,18 @@
       "digest": "sha256:63f8865dc5f0388de1952ec3ec636c8681bced74ade68a1dace8bb7e9114e891"
     },
     {
+      "name": "rustwtm-website-media.zip",
+      "size": 1636427,
+      "url": "https://github.com/RustWTM/RustWTM/releases/download/v0.30.0/rustwtm-website-media.zip",
+      "digest": "sha256:6b21d69ed6e45cf099c182eafc3c19051835562b6ddfaf0dad3499f2bbddea4b"
+    },
+    {
+      "name": "rustwtm-website-media.zip.sha256",
+      "size": 93,
+      "url": "https://github.com/RustWTM/RustWTM/releases/download/v0.30.0/rustwtm-website-media.zip.sha256",
+      "digest": "sha256:2c9c91609ef07d1862079eff29272df1276e655f7d6a980e1548e459d63f1394"
+    },
+    {
       "name": "rustwtm-x86_64-pc-windows-msvc.zip",
       "size": 52229131,
       "url": "https://github.com/RustWTM/RustWTM/releases/download/v0.30.0/rustwtm-x86_64-pc-windows-msvc.zip",
@@ -179,6 +191,6 @@
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
     "unreleased": "### Changed\n\n- Build a versioned website image package from the exact release's fixture-rendered\n  interface, and publish it with the installers so homepage highlights and the\n  screenshot gallery can follow new stable releases automatically.\n- Refresh the product website after successful release publication, release-note\n  edits and changelog changes through a repository-scoped GitHub App connection."
   },
-  "checkedAt": "2026-11-11T16:07:27.666Z",
-  "contentHash": "14a45947df0bc23081f8970f6258d4283cf33503a59973e1054ff38b4b4329f8"
+  "checkedAt": "2026-11-11T16:20:04.989Z",
+  "contentHash": "26653931254fa75dcc8f7dc1482be78a7afa67a7ecd2bf8ba7bd477c39ea4494"
 }
