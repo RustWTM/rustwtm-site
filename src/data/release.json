@@ -187,7 +187,7 @@
     }
   ],
   "changelog": {
-    "sha": "d1187f2ef8a080e4fc419fe48b1ead84079865b7",
+    "sha": "d85d7f2dffab7399464ec06aaaa108c4f0d13b7c",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
     "unreleased": ""
   },
@@ -579,6 +579,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-14T19:21:38.004Z",
-  "contentHash": "2c3953ef4cd9ff1ee761f80d1b4e52ed870ffe440503368917354cd04e9775b5"
+  "checkedAt": "2026-11-15T12:08:37.474Z",
+  "contentHash": "743bb21c07c3639e88eb29200edca329b101bb08aa3a8b6a2608eb040256fed8"
 }
