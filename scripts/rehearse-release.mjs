@@ -9,6 +9,8 @@ import { cp, mkdir, mkdtemp, readFile, stat, symlink, writeFile } from "node:fs/
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import sharp from "sharp";
+import { buildSnapshot, parseChangelog } from "./lib/product-content.mjs";
+import { releaseHighlights } from "../src/lib/release-highlights.ts";
 
 const source = fileURLToPath(new URL("../", import.meta.url));
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -44,12 +46,19 @@ const passed = (name) => {
   report.scenarios.push(name);
   console.log(`PASS ${name}`);
 };
-const baseline = JSON.parse(await readFile(path.join(source, "src/data/release.json"), "utf8"));
+let baseline = JSON.parse(await readFile(path.join(source, "src/data/release.json"), "utf8"));
 const [major, minor] = baseline.version.slice(1).split(".").map(Number);
 const nextVersion = `v${major}.${minor + 1}.0`;
-const preparedVersion = `v${major}.${minor + 2}.0`;
+const laterVersion = `v${major}.${minor + 2}.0`;
 const nextCommit = "b".repeat(40);
-const notes = `### Added
+const developmentEntries = parseChangelog(
+  "## [Unreleased]\n" +
+    baseline.changelog.unreleased.replace(/^## v(\d+\.\d+\.\d+) — In development$/gm, "## [$1]"),
+);
+const preparedNotes = developmentEntries.get(nextVersion);
+const notes =
+  preparedNotes ||
+  `### Added
 - **Release rehearsal ${nextVersion}:** These are isolated test notes, not a published feature.
 - **New screenshot package:** All gallery images change with this simulated version.
 ### Fixed
@@ -57,6 +66,8 @@ const notes = `### Added
 report.from = baseline.version;
 report.to = nextVersion;
 report.captures = baseline.presentation.captures.length;
+report.preparedNotesSource = preparedNotes ? "committed preparation notes" : "isolated test notes";
+report.remainingDevelopmentVersion = laterVersion;
 await mkdir(checkout);
 // Copy tracked source and media, never a user's untracked files, credentials or Git state.
 const tracked = git(source, "ls-files", "-z").split("\0").filter(Boolean);
@@ -87,6 +98,14 @@ assert.equal(git(checkout, "remote", "get-url", "origin"), remote);
 const remoteHead = () => git(root, "--git-dir", remote, "rev-parse", "main");
 const snapshot = () =>
   JSON.parse(git(root, "--git-dir", remote, "show", "main:src/data/release.json"));
+const rawChangelog = [
+  "## [Unreleased]\n- DO NOT SHOW UNRELEASED REHEARSAL CONTENT",
+  `## [${laterVersion.slice(1)}]\n- PREPARED NOTES STAY IN DEVELOPMENT`,
+  `## [${nextVersion.slice(1)}]\n${notes}`,
+  ...baseline.history.map(
+    (item) => `## [${item.version.slice(1)}]\n${item.changelog || item.body}`,
+  ),
+].join("\n\n");
 const input = {
   identity: {
     id: baseline.repositoryId,
@@ -95,7 +114,7 @@ const input = {
   },
   latest: {
     tag_name: nextVersion,
-    published_at: "2026-11-11T18:00:00Z",
+    published_at: new Date(Date.parse(baseline.publishedAt) + 86400000).toISOString(),
     html_url: `https://github.com/${baseline.repository}/releases/tag/${nextVersion}`,
     body: notes,
     assets: baseline.assets
@@ -118,14 +137,33 @@ const input = {
     type: "file",
     encoding: "base64",
     sha: "c".repeat(40),
-    size: Buffer.byteLength(notes),
+    size: Buffer.byteLength(rawChangelog),
     html_url: `https://github.com/${baseline.repository}/blob/main/CHANGELOG.md`,
-    content: Buffer.from(
-      `## [Unreleased]\n- DO NOT SHOW UNRELEASED REHEARSAL CONTENT\n\n## [${preparedVersion.slice(1)}]\n- PREPARED NOTES STAY IN DEVELOPMENT\n\n## [${nextVersion.slice(1)}]\n${notes}`,
-    ).toString("base64"),
+    content: Buffer.from(rawChangelog).toString("base64"),
   },
   commit: nextCommit,
 };
+// Seed the same prepared notes before publication, even when no real preparation
+// exists yet. Both phases use this one changelog; only GitHub's stable release changes.
+baseline = buildSnapshot({
+  ...input,
+  latest: {
+    tag_name: baseline.version,
+    published_at: baseline.publishedAt,
+    html_url: baseline.url,
+    body: baseline.history.find((item) => item.version === baseline.version).body,
+    assets: baseline.assets.map(({ url, ...asset }) => ({ ...asset, browser_download_url: url })),
+  },
+  presentation: baseline.presentation,
+  previous: baseline,
+});
+await writeFile(
+  path.join(checkout, "src/data/release.json"),
+  JSON.stringify(baseline, null, 2) + "\n",
+);
+git(checkout, "add", "src/data/release.json");
+git(checkout, "commit", "-m", "Prepare the upcoming release in the isolated fixture");
+git(checkout, "push", "origin", "main");
 const preload = path.join(root, "github-boundary.mjs");
 await writeFile(
   preload,
@@ -234,6 +272,34 @@ const readHttp = async (route) => {
 const receipt = async () => JSON.parse(await readHttp("/updates.json"));
 try {
   assert.equal((await receipt()).version, baseline.version);
+  const beforeHome = (await readHttp("/")).toString();
+  const beforeChangelog = (await readHttp("/changelog/")).toString();
+  const developmentSection = (html) =>
+    html.match(/<section class="release-entry development-entry"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(developmentSection(beforeChangelog)?.includes(`${nextVersion} — In development`));
+  assert.ok(baseline.changelog.unreleased.includes(notes), "The exact notes start in development");
+  const beforeSpotlight = beforeHome.match(
+    /<section class="container release-spotlight"[\s\S]*?<\/section>/,
+  )?.[0];
+  assert.ok(
+    beforeSpotlight?.replace(/<[^>]*>/g, "").startsWith(`WHAT’S NEW IN ${baseline.version}`),
+  );
+  assert.ok(!beforeHome.includes(`${nextVersion} — In development`));
+  assert.ok(
+    beforeHome.includes(
+      `/releases/download/${baseline.version}/RustWTM-${baseline.version.slice(1)}-x64.msi`,
+    ),
+  );
+  for (const capture of baseline.presentation.captures) {
+    assert.ok(
+      beforeHome.includes(capture.file),
+      "Before publication the gallery retains its stable image paths",
+    );
+    assert.equal(hash(await readHttp(capture.file)), capture.sha256);
+  }
+  passed(
+    "the exact upcoming release notes start in development while cards and images stay stable",
+  );
   const initialHead = remoteHead();
   const reject = async (name, message) => {
     const result = await sync();
@@ -340,6 +406,12 @@ print(base64.b64encode(b.getvalue()).decode())`,
   assert.equal(next.presentation.version, nextVersion);
   assert.equal(next.presentation.sourceCommit, nextCommit);
   assert.equal(next.history.find((item) => item.version === nextVersion).body, notes);
+  assert.ok(!next.changelog.unreleased.includes(`## ${nextVersion} — In development`));
+  assert.ok(
+    !next.changelog.unreleased.includes(notes),
+    "Promoted notes leave the development snapshot",
+  );
+  assert.ok(next.changelog.unreleased.includes(laterVersion), "Later work remains in development");
   assert.equal(next.presentation.captures.length, baseline.presentation.captures.length);
   const committedFiles = git(
     root,
@@ -378,20 +450,38 @@ print(base64.b64encode(b.getvalue()).decode())`,
     /<section class="container release-spotlight"[\s\S]*?<\/section>/,
   )?.[0];
   assert.ok(spotlight, "Rendered release section");
-  for (const title of [
-    `Release rehearsal ${nextVersion}`,
-    "New screenshot package",
-    "Together on publication",
-  ])
-    assert.ok(spotlight.includes(`<h3>${title}</h3>`), title);
-  assert.ok(spotlight.includes(nextVersion));
-  assert.ok(!spotlight.includes(baseline.version));
+  const escapeHtml = (text) =>
+    text.replace(
+      /[&<>"']/g,
+      (character) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#x27;" })[character],
+    );
+  const expectedHighlights = releaseHighlights(notes);
+  for (const highlight of expectedHighlights) {
+    assert.ok(spotlight.includes(`<h3>${escapeHtml(highlight.title)}</h3>`), highlight.title);
+    assert.ok(
+      spotlight.includes(`<p>${escapeHtml(highlight.text)}</p>`),
+      "Full prepared bullet context reaches the homepage",
+    );
+  }
+  assert.ok(spotlight.replace(/<[^>]*>/g, "").startsWith(`WHAT’S NEW IN ${nextVersion}`));
   assert.ok(!spotlight.includes("DO NOT SHOW UNRELEASED"));
   assert.ok(!spotlight.includes("PREPARED NOTES STAY IN DEVELOPMENT"));
   const changelogHtml = await readFile(path.join(after, "changelog/index.html"), "utf8");
   assert.ok(changelogHtml.includes('id="in-development"'));
-  assert.ok(changelogHtml.includes(`${preparedVersion} — In development`));
-  assert.ok(changelogHtml.includes("PREPARED NOTES STAY IN DEVELOPMENT"));
+  const remainingDevelopment = developmentSection(changelogHtml);
+  assert.ok(remainingDevelopment?.includes(`${laterVersion} — In development`));
+  assert.ok(remainingDevelopment.includes("PREPARED NOTES STAY IN DEVELOPMENT"));
+  assert.ok(!remainingDevelopment.includes(`${nextVersion} — In development`));
+  assert.ok(!remainingDevelopment.includes(escapeHtml(expectedHighlights[0].text)));
+  assert.ok(
+    changelogHtml.includes(
+      `id="${nextVersion.replaceAll(".", "-")}" class="release-entry release-latest"`,
+    ),
+  );
+  passed(
+    "publication removes the prepared version from development and promotes the same notes to stable cards",
+  );
   const installerPath = `/releases/download/${nextVersion}/RustWTM-${nextVersion.slice(1)}-x64.msi`;
   assert.ok(html.includes(installerPath), "Homepage download follows the new release");
   assert.ok(
@@ -414,9 +504,11 @@ print(base64.b64encode(b.getvalue()).decode())`,
   assert.equal(live.presentation.captures, next.presentation.captures.length);
   for (const capture of next.presentation.captures)
     assert.equal(hash(await readHttp(capture.file)), capture.sha256);
-  assert.ok(
-    (await readHttp("/")).toString().includes(notes.split("\n")[1].match(/\*\*(.+?):\*\*/)[1]),
-  );
+  const publishedHome = (await readHttp("/")).toString();
+  assert.ok(publishedHome.includes(`<h3>${escapeHtml(expectedHighlights[0].title)}</h3>`));
+  const publishedDevelopment = developmentSection((await readHttp("/changelog/")).toString());
+  assert.ok(publishedDevelopment?.includes(laterVersion));
+  assert.ok(!publishedDevelopment.includes(`${nextVersion} — In development`));
   passed(
     "the real static build and HTTP site expose new cards, hero, gallery and receipt together",
   );
@@ -431,6 +523,17 @@ print(base64.b64encode(b.getvalue()).decode())`,
   report.newContentHash = next.contentHash;
   report.fixtureCommit = committed;
   report.previewUrl = url;
+  report.promotedHeadings = expectedHighlights.map((highlight) => highlight.title);
+  report.before = {
+    stable: baseline.version,
+    development: nextVersion,
+    images: baseline.presentation.version,
+  };
+  report.after = {
+    stable: next.version,
+    development: laterVersion,
+    images: next.presentation.version,
+  };
   await writeFile(path.join(root, "report.json"), JSON.stringify(report, null, 2) + "\n");
   console.log(
     `Release rehearsal passed: ${report.scenarios.length} scenarios, ${report.captures} changed images.`,

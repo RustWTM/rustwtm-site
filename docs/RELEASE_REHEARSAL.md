@@ -1,6 +1,6 @@
 # New-release update rehearsal
 
-The release-transition gate runs the real updater, Git commit and push, production static export and HTTP serving in isolation. Run it with `npm run check:release-transition`. The Git remote is a disposable local bare repository, not either project's real remote. The GitHub boundary supplies an annotated release tag, new stable-release notes, a changelog with an unreleased sentinel and a valid website media ZIP. All existing gallery views receive new bytes and a visible rehearsal watermark. The target is the next minor version after the committed stable snapshot.
+The release-transition gate runs the real updater, Git commit and push, production static export and HTTP serving in isolation. Run it with `npm run check:release-transition`. The Git remote is a disposable local bare repository, not either project's real remote. The GitHub boundary supplies an annotated release tag, new stable-release notes, a changelog with an unreleased sentinel and a valid website media ZIP. It reuses committed preparation notes for the next version when available; otherwise it supplies explicit test notes. All existing gallery views receive new bytes and a visible rehearsal watermark. The target is the next minor version after the committed stable snapshot.
 
 The script builds the previous website, imports the new release through `sync-product.mjs`, builds the updated website through the normal `npm run build` command, and checks the rendered release section, hero and gallery references, version receipt and every image's HTTP checksum. A local publication pointer switches only after a successful build. Dependency installation is shared through a local junction; only the isolated copy's Turbopack resolution root changes. Production source, snapshot, product tags and release assets remain untouched.
 
@@ -14,8 +14,12 @@ The script builds the previous website, imports the new release through `sync-pr
 6. An update committed before a failed publication requests publication again, without a duplicate content commit. The old HTTP site stays intact until replacement.
 7. The production export exposes the new cards, hero, gallery, downloads and `/updates.json` together. Every image is fetched over HTTP and compared with its new SHA-256. Old gallery paths and unreleased claims must be absent from the rendered release section.
 8. A repeated completed check requests neither another commit nor another publication.
+9. Before publication, the exact upcoming notes appear in development while the stable homepage, downloads and images keep the preceding version.
+10. Publication promotes those same notes into the stable history and homepage, removes their version from development, changes every capture in the same commit, and leaves unrelated later work in development. Both before and after pages are checked over HTTP after real production builds.
 
 The workflow runs this gate after the normal integration suite and before uploading a Pages artifact. A failed rehearsal blocks publication. Logs, the local before/after exports and `report.json` are retained under `.temp_files/release-rehearsal-*/`. On a developer machine, setting `REHEARSAL_PREVIEW=1` keeps the isolated HTTP preview running until interrupted.
+
+The preparation-to-publication extension was exercised on 15 November 2026 with the committed v0.33.0 Security, Environment and Handles preparation notes. The starting website remained v0.32.0 with those notes in development. The simulated publication used the identical notes, an annotated tag fixture and 27 new watermarked images: the resulting homepage and receipt identified v0.33.0, its development heading disappeared, and a separate v0.34.0 fixture remained in development. The report records the preparation source, promoted headings and both version states. No v0.33.0 GitHub release or real product screenshot was created by this rehearsal.
 
 ## Verification boundary
 
