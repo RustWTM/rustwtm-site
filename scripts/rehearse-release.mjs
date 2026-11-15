@@ -47,6 +47,7 @@ const passed = (name) => {
 const baseline = JSON.parse(await readFile(path.join(source, "src/data/release.json"), "utf8"));
 const [major, minor] = baseline.version.slice(1).split(".").map(Number);
 const nextVersion = `v${major}.${minor + 1}.0`;
+const preparedVersion = `v${major}.${minor + 2}.0`;
 const nextCommit = "b".repeat(40);
 const notes = `### Added
 - **Release rehearsal ${nextVersion}:** These are isolated test notes, not a published feature.
@@ -120,7 +121,7 @@ const input = {
     size: Buffer.byteLength(notes),
     html_url: `https://github.com/${baseline.repository}/blob/main/CHANGELOG.md`,
     content: Buffer.from(
-      `## [Unreleased]\n- DO NOT SHOW UNRELEASED REHEARSAL CONTENT\n\n## [${nextVersion.slice(1)}]\n${notes}`,
+      `## [Unreleased]\n- DO NOT SHOW UNRELEASED REHEARSAL CONTENT\n\n## [${preparedVersion.slice(1)}]\n- PREPARED NOTES STAY IN DEVELOPMENT\n\n## [${nextVersion.slice(1)}]\n${notes}`,
     ).toString("base64"),
   },
   commit: nextCommit,
@@ -386,6 +387,11 @@ print(base64.b64encode(b.getvalue()).decode())`,
   assert.ok(spotlight.includes(nextVersion));
   assert.ok(!spotlight.includes(baseline.version));
   assert.ok(!spotlight.includes("DO NOT SHOW UNRELEASED"));
+  assert.ok(!spotlight.includes("PREPARED NOTES STAY IN DEVELOPMENT"));
+  const changelogHtml = await readFile(path.join(after, "changelog/index.html"), "utf8");
+  assert.ok(changelogHtml.includes('id="in-development"'));
+  assert.ok(changelogHtml.includes(`${preparedVersion} — In development`));
+  assert.ok(changelogHtml.includes("PREPARED NOTES STAY IN DEVELOPMENT"));
   const installerPath = `/releases/download/${nextVersion}/RustWTM-${nextVersion.slice(1)}-x64.msi`;
   assert.ok(html.includes(installerPath), "Homepage download follows the new release");
   assert.ok(

@@ -136,6 +136,15 @@ export function buildSnapshot({
       changelog: entries.get(item.tag_name) ?? "",
     });
   }
+  const development = [entries.get("unreleased") ?? ""];
+  const currentVersion = latest.tag_name.slice(1).split(".").map(BigInt);
+  for (const [tag, body] of entries) {
+    if (!stableTag.test(tag) || !body || records.has(tag)) continue;
+    const version = tag.slice(1).split(".").map(BigInt);
+    const difference = version.findIndex((part, index) => part !== currentVersion[index]);
+    if (difference !== -1 && version[difference] > currentVersion[difference])
+      development.push(`## ${tag} — In development\n\n${body}`);
+  }
   const content = {
     schemaVersion: 1,
     repository,
@@ -149,7 +158,7 @@ export function buildSnapshot({
     changelog: {
       sha: changelog.sha,
       url: repositoryUrl(changelog.html_url, repository, "blob/"),
-      unreleased: entries.get("unreleased") ?? "",
+      unreleased: development.filter(Boolean).join("\n\n"),
     },
     ...(presentation ? { presentation } : {}),
   };

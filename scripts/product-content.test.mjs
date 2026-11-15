@@ -59,6 +59,71 @@ test("published release, package pairs and development notes stay separate", () 
   assert.match(result.changelog.unreleased, /future feature/);
   assert.equal(result.assets.length, 4);
 });
+
+test("prepared version notes remain visible in development before a GitHub release exists", () => {
+  const data = fixture();
+  data.changelog.content = Buffer.from(
+    "## [Unreleased]\n\n## [1.2.4] - 2026-11-15\n### Added\n- A prepared inspector view.\n\n## [1.2.3]\n- The current release.",
+  ).toString("base64");
+  const presentation = {
+    version: "v1.2.3",
+    sourceCommit: "a".repeat(40),
+    archiveSha256: "b".repeat(64),
+  };
+  const result = buildSnapshot({ ...data, presentation });
+  assert.match(result.changelog.unreleased, /v1\.2\.4 — In development/);
+  assert.match(result.changelog.unreleased, /prepared inspector view/);
+  assert.equal(result.version, "v1.2.3");
+  assert.deepEqual(result.presentation, presentation);
+  assert.equal(result.history.length, 1);
+  assert.doesNotMatch(result.history[0].body, /prepared inspector/);
+  assert.ok(result.assets.every((asset) => asset.url.includes("/v1.2.3/")));
+});
+
+test("development collects only newer unpublished versions with numeric version ordering", () => {
+  const data = fixture();
+  data.changelog.content = Buffer.from(
+    "## [Unreleased]\n- A work in progress.\n## [1.2.10]\n- A prepared version.\n## [1.3.0]\n- Already published elsewhere.\n## [1.2.3]\n- Current stable.\n## [1.2.2]\n- An older unpublished gap.",
+  ).toString("base64");
+  data.releases = [
+    {
+      ...data.latest,
+      tag_name: "v1.3.0",
+      html_url: "https://github.com/Example/Product/releases/tag/v1.3.0",
+    },
+  ];
+  const result = buildSnapshot(data);
+  assert.match(result.changelog.unreleased, /work in progress/);
+  assert.match(result.changelog.unreleased, /prepared version/);
+  assert.doesNotMatch(
+    result.changelog.unreleased,
+    /Already published|Current stable|older unpublished/,
+  );
+});
+
+test("prepared notes leave development when the stable release is published", () => {
+  const data = fixture();
+  data.changelog.content = Buffer.from(
+    "## [Unreleased]\n\n## [1.2.4]\n- A prepared inspector view.\n\n## [1.2.3]\n- Current stable.",
+  ).toString("base64");
+  assert.match(buildSnapshot(data).changelog.unreleased, /prepared inspector/);
+  const prior = data.latest;
+  data.latest = {
+    ...prior,
+    tag_name: "v1.2.4",
+    html_url: prior.html_url.replace("v1.2.3", "v1.2.4"),
+    body: "### Added\n- A prepared inspector view.",
+    assets: prior.assets.map((asset) => ({
+      ...asset,
+      name: asset.name.replace("1.2.3", "1.2.4"),
+      browser_download_url: asset.browser_download_url.replaceAll("1.2.3", "1.2.4"),
+    })),
+  };
+  const result = buildSnapshot({ ...data, releases: [prior] });
+  assert.equal(result.version, "v1.2.4");
+  assert.equal(result.changelog.unreleased, "");
+  assert.match(result.history[0].body, /prepared inspector/);
+});
 test("unchanged content keeps its hash and timestamp; release edits and changelog edits change it", () => {
   const data = fixture(),
     first = buildSnapshot({ ...data, now: "2026-01-01T00:00:00Z" });

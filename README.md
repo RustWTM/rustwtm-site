@@ -48,6 +48,8 @@ Every future product release renders its own interface in the product's Windows 
 
 The required media contract begins at v0.30.0. An incomplete or mismatched package stops automatic publication and preserves the last complete website. No visitor telemetry is captured; the actual application renderer uses fixture data. See [automatic updates](docs/AUTOMATIC_UPDATES.md) for the producer and consumer contract.
 
+The changelog's development section also includes prepared version entries newer than the latest stable release, even when the source's `Unreleased` heading is empty. These notes leave development when that stable release is published. Homepage highlights, download links and screenshots continue to follow the published release.
+
 `npm run check:release-transition` rehearses the next minor release in an isolated local Git repository. It changes every image, supplies explicit test notes, runs the real updater and two production builds, and verifies the exported page and every image over HTTP. Missing, old-version, wrong-commit and corrupted packages must preserve the complete previous release. Publication retries and no-change checks are also exercised. CI runs this gate before uploading the Pages artifact. Test notes and watermarked images never enter the real snapshot or public release assets. Evidence is retained under `.temp_files/release-rehearsal-*/`; see [the release rehearsal report](docs/RELEASE_REHEARSAL.md) for the verification boundary.
 
 ## Publication
