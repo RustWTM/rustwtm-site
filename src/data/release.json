@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "cebec2f4155139e7b06b2ea14cf4f4e8bf50d89f",
+    "sha": "b955ec613a35db4099b4a3576cf6716aad405498",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.36.1 — In development\n\nLengths of time and period buttons are written in the window's language,\nfound by the visual review of 0.36.0's new pages in English, Turkish and\nGerman. IPC stays at protocol 18, so a 0.36.0 service and a 0.36.1 window\nwork together.\n\n### Fixed\n\n- Lengths of time are written in the window's language: container alerts,\n  a container's and a device's recorded history, App history and the\n  watch notices said \"1m 15s\" and \"21h 00m\" in every language; Turkish\n  now reads \"1 dk 15 sn\" and \"21 sa\", German \"1 Min. 15 s\". The 1 h,\n  6 h and 24 h period buttons of App history, recorded incidents and a\n  device's recorded history are translated too (\"24 sa\", \"24 Std.\"), and\n  a sentence ending in an abbreviation no longer gets two full stops.\n- Turkish: the support bundle's opening sentence read awkwardly; it now\n  says the text below is saved as shown."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -579,6 +579,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-18T14:42:04.190Z",
-  "contentHash": "f142a97416f0a012f8c4419aea6c5047dfced8128e90c19e723410d73836cea6"
+  "checkedAt": "2026-11-18T18:35:12.026Z",
+  "contentHash": "665e25ac5d64c0b033d395cb5171dff315a5e847758894a3ad363025c1be3d42"
 }
