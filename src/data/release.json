@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "b955ec613a35db4099b4a3576cf6716aad405498",
+    "sha": "734052fcf13c8216069828a1995288b278be83e8",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.36.2 — In development\n\nFixes from the visual review of the pages 0.36.x had not looked at\n(Processes, Disks, Sensors, Governor, Limits, Kill list, Network, Ports,\nStartup and the rest) in English, Turkish and German. IPC stays at\nprotocol 18, so a 0.36.x service and a 0.36.2 window work together.\n\n### Fixed\n\n- The process inspector wrote its up time as \"2h 00m 03s\" in every\n  language; it uses the window's units now (\"2 sa\", \"2 Std.\"). Lengths of\n  two days or more are written in days and hours (\"6 gün 23 sa\",\n  \"6 Tage 23 Std.\") instead of hours alone.\n- Sensors' *Min / max* column used a decimal point in Turkish and German\n  while the reading beside it used a comma.\n- English: the Governor's effective limits and its events named the\n  priority class as Windows' API does (\"BelowNormal\"); they say \"below\n  normal\".\n- Limits wrote memory budgets in \"GB\" though they are GiB, as the rest of\n  the window and the service count them; `wtm config` lists them in GiB\n  too.\n- Kill list: the CPU field put the percent sign after the number in\n  Turkish (\"50% CPU\"); it reads \"%50 CPU\" like the rest of the window.\n- Network wrote protocols as \"Tcp\" and \"Udp\"; they read \"TCP\" and \"UDP\".\n- A count of one took the plural in German, French, Spanish, Italian,\n  Dutch, Brazilian Portuguese and Ukrainian (\"1 TCP-Ports lauschen\",\n  \"1 Autostart-Apps\").\n- Turkish: a percentage no longer takes a suffix that only fits some\n  numbers (\"%50'ı\"); \"instance\" is \"kopya\", not \"örnek\"; the Limits\n  dry-run notice, *Ask AI about this PC*, the uninstall notice, the fan's\n  manual duty and \"stays above … for …\" read naturally.\n- German: \"Zuwachs/Std.\" and the GPU card's busiest-engine line."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -579,6 +579,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-18T19:17:33.639Z",
-  "contentHash": "aa4056e1a64bc287c6dd02e5eaacfc0ac0469cde22039def71213d4e2ed32d89"
+  "checkedAt": "2026-11-18T20:57:25.878Z",
+  "contentHash": "c252f493b31dd272c8da090f6922a64212d67816809fa600082299d4559ac045"
 }
