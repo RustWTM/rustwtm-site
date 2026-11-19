@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "9b994952751925864e5c06e4056b20dcc08a589a",
+    "sha": "90f80f7befd074890ef4405288eae3308c2a8e75",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.36.4 — In development\n\nThe layout details left from the 0.36.2 review, singular counts in the\nremaining catalogs, and numbers in the service's messages. IPC stays at\nprotocol 18, so a 0.36.x service and a 0.36.4 window work together.\n\n### Fixed\n\n- The status bar kept to one line only on wide windows: on a compact one\n  its last action and the message wrapped to a second line. The actions\n  now keep their place at the right, the CPU and memory summary is\n  shortened first, and a message moves below only when its start does\n  not fit beside them.\n- *More below* covered the last row and its buttons when less than a row\n  was left; its button now shows only while more than a row is hidden,\n  and the faded edge says the rest.\n- Tables that scroll sideways cut their last column at the edge with\n  nothing to say it goes on; the side with columns beyond it fades.\n- Numbers in the service's messages kept their decimal point in every\n  language (\"durchschnittlich 12.5% CPU\"); they take the language's sign\n  (\"12,5%\").\n- A count of one took the plural noun or verb in Swahili, Hindi, Marathi,\n  Gujarati, Punjabi, Telugu, Tamil and Kannada; the singular of the\n  well-known tools line says \"or\" in those and in Bengali, Filipino,\n  Indonesian, Vietnamese, Japanese, Korean and Chinese."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -579,6 +579,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-19T01:24:56.617Z",
-  "contentHash": "217d4a7e38d4694efc5dd058a4422ec92ca2ec07bd11f2ffa40fa30960b71975"
+  "checkedAt": "2026-11-19T08:22:52.965Z",
+  "contentHash": "6186d7bd0545c4e524f4d78549b9a87cc7eb9f7159cece55b467854879e267aa"
 }
