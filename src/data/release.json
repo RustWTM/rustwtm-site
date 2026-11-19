@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "44c0a5031fddc3039197531660e4ccfca814dbec",
+    "sha": "c501262a9753f8142781b2068636beb8fba3d9a4",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.38.0 — In development\n\n[Release scope and validation](docs/0.38.0-review.md)\n\nIdeas taken from Process Lasso: a power plan and keep-awake per app, and\nlower I/O and memory priority in rules.\n\n### Added\n\n- **App power** ([design and measurements](docs/app-power.md)): a page\n  under *Protect* and `[[while_running]]` entries that, while one of their\n  programs runs, switch to a chosen power plan and keep the computer, or\n  the computer and the screen, awake. The plan in use before comes back\n  when the programs exit, unless you chose another one meanwhile; a crash\n  never leaves the machine on another plan. Game mode's plan comes first.\n- Rule actions `io_priority` and `memory_priority`: lower a program's disk\n  and network I/O priority, or how long Windows keeps its standby memory.\n\n### Changed\n\n- Game mode's High performance plan goes through the same owner as the\n  App power entries, so the two never undo each other's plan.\n- IPC protocol 20: a 0.37 window and a 0.38 service refuse each other\n  until both are updated (the MSI updates both)."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -593,6 +593,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-19T15:01:19.598Z",
-  "contentHash": "7189e358bcafb4c484faed0b4864bf685bbcc6daf692196d55f0c2236aebd807"
+  "checkedAt": "2026-11-19T17:16:08.392Z",
+  "contentHash": "6099a7b829531ee157c3054cfa8cf05b8a4631477f6196de89783c72e7079dfc"
 }
