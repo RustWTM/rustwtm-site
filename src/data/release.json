@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "734052fcf13c8216069828a1995288b278be83e8",
+    "sha": "9b994952751925864e5c06e4056b20dcc08a589a",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.36.3 — In development\n\nA fix for the memory map of a process that has just started, and three\ndisplay details left from the 0.36.2 review. IPC stays at protocol 18, so\na 0.36.x service and a 0.36.3 window work together.\n\n### Fixed\n\n- The process inspector's memory map named no heap, stack, PEB or TEB of\n  a process that was still starting, and said the process refused to be\n  read: such a process has no heap list yet. Everything else is named\n  now and the default heap is left out until it exists.\n- German wrote some percentages with a space (\"100 %\") and most without;\n  all are written \"100%\" now.\n- Disks groups the file and folder counts of a scan (\"1 204 311 files\").\n- The process inspector's CPU row shows one decimal, as its header and\n  the process table do."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -579,6 +579,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-18T21:43:27.784Z",
-  "contentHash": "1b6a0be18f61a8a9884ea90affd183b60d4bceb95a3c4701b86345bb8b3fe769"
+  "checkedAt": "2026-11-19T00:48:35.169Z",
+  "contentHash": "cda7af64f735e4a2acc8ae24f8024b13b3dee94115ef8341c013b1d3b1a1f6b9"
 }
