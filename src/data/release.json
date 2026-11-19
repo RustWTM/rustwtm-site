@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "0e164bb641a11c6335199c0f59cc2a67cd4c3465",
+    "sha": "44c0a5031fddc3039197531660e4ccfca814dbec",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.37.1 — In development\n\n[Release scope and validation](docs/0.37.1-review.md)\n\nFixes from the 0.37.0 visual review.\n\n### Changed\n\n- The Cores page's *Why* column, the plan's notes, the service's event\n  lines and `wtm cores` name entries as the page does (*keep apart*,\n  *reserve cores*, *keep on cores*), not by their `config.toml` table\n  names.\n- Governor and the Cores, Limits, Kill list and Rules hints name the mode\n  as Settings does: *Monitoring only* and *Enforcing* instead of\n  *Dry-run*.\n- The Cores entry table shows its edit and delete buttons first.\n- Telegram settings say that a standard build only reports.\n- Clearer wording for the *Hard affinity* and *Include the programs it\n  starts* switches and the line about processes left alone; the Cores\n  page's translations corrected in every language (among them Turkish\n  *Çekirdek kuralları* and *Çekirdek tahsis et*, German *Effizienzkerne*,\n  and one word each for \"reserve\" and \"save\" in Bengali and Swahili).\n\n### Fixed\n\n- In a narrow window the status bar keeps the CPU and memory numbers in\n  every language: the summary drops the word \"Memory\", then the total,\n  before it is cut; *Run new task* and *Restart as administrator* become\n  icons; and the age of current data is left out (data out of date still\n  says so).\n- Docker memory values use the language's decimal separator."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -593,6 +593,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-19T12:02:41.999Z",
-  "contentHash": "6179d67021cd8d8fb3972bed3c38495a59739feebe08a45ee38a6e0f8fa54f09"
+  "checkedAt": "2026-11-19T14:13:33.481Z",
+  "contentHash": "9141f3f080ff299da700507d412eefe73cfa33dba8999266173a6db30e41ee64"
 }
