@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "2fca3f5256180fae592525ae3f298f3a75e29375",
+    "sha": "f03b9f7f841b06057cba839afed970360f628ae2",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": "### Fixed\n\n- The PowerShell uninstaller verifies the service's executable path and\n  closes only programs from the selected installation. A native removal\n  or cleanup failure stops teardown before files or shortcuts are removed.\n  Paths containing brackets are handled literally, and a failed launch\n  cleans up the temporary uninstaller."
+    "unreleased": "## v0.38.1 — In development\n\n[Release scope and validation](docs/0.38.1-review.md)\n\nFixes found by running App power against a real power plan, and a safer\nPowerShell uninstaller.\n\n### Fixed\n\n- Game mode no longer reports switching to High performance and back\n  when that plan is already in use; nothing is switched, saved or\n  logged then.\n- After you chose another power plan while an App power entry was\n  active, a game starting next got no power plan; it now switches as\n  usual and gives your plan back afterwards. The *App power* page no\n  longer names RustWTM's plan once you chose another.\n- The PowerShell uninstaller verifies the service's executable path and\n  closes only programs from the selected installation. A native removal\n  or cleanup failure stops teardown before files or shortcuts are removed.\n  Paths containing brackets are handled literally, and a failed launch\n  cleans up the temporary uninstaller."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-20T10:53:05.001Z",
-  "contentHash": "58b7cde7794c56034434b5cbc802db3b0d294ef923d0ab02d1caa88c2c657b64"
+  "checkedAt": "2026-11-20T11:28:04.449Z",
+  "contentHash": "66bc48961ac2740927f13bdf0cbeb2c081f3c2c6b4ca9d690b718d133262175c"
 }
