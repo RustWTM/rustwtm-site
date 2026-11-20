@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "f03b9f7f841b06057cba839afed970360f628ae2",
+    "sha": "c33753f61fbfdebffe0374bb645cb3d338ad3c88",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "### Fixed\n\n- Turning on *Always open RustWTM as administrator* no longer fails with\n  \"Windows Task Scheduler request timed out\" on a slow or freshly started\n  machine: Windows PowerShell gets 60 seconds instead of 15 to register,\n  remove or start RustWTM's administrator tasks."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-20T12:04:14.867Z",
-  "contentHash": "63d45fb4fc93ba5280b76ea093bb5e5d7a1cfb7f776dfb3428cc79305db0adbd"
+  "checkedAt": "2026-11-20T16:02:07.246Z",
+  "contentHash": "a067be2f4088c80cfad20e2aab482edeaa5c5ee4ccb6d39c20e0731d2b2fdb2a"
 }
