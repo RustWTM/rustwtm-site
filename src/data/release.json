@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "c501262a9753f8142781b2068636beb8fba3d9a4",
+    "sha": "2fca3f5256180fae592525ae3f298f3a75e29375",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "### Fixed\n\n- The PowerShell uninstaller verifies the service's executable path and\n  closes only programs from the selected installation. A native removal\n  or cleanup failure stops teardown before files or shortcuts are removed.\n  Paths containing brackets are handled literally, and a failed launch\n  cleans up the temporary uninstaller."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-19T18:02:33.130Z",
-  "contentHash": "814b9b4ee231e7e1dfc1bdf668bec399a2bfb6de3406a4c9fedc3f2f4c1f8c7a"
+  "checkedAt": "2026-11-20T10:53:05.001Z",
+  "contentHash": "58b7cde7794c56034434b5cbc802db3b0d294ef923d0ab02d1caa88c2c657b64"
 }
