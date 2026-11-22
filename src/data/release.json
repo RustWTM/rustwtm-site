@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "b04f4e300e0210a22b4defb2134d94e9116957dc",
+    "sha": "39b0930d68830b32d0b785065328c3b9344c3158",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": "### Fixed\n\n- The close button hides RustWTM to the tray again after RustWTM was\n  started a second time to bring back its window; it did nothing then\n  ([#5](https://github.com/RustWTM/RustWTM/issues/5))."
+    "unreleased": "## v0.39.1 — In development\n\n[Release scope and validation](docs/0.39.1-review.md)\n\nThe close button works again after a second start.\n\n### Fixed\n\n- The close button hides RustWTM to the tray again after RustWTM was\n  started a second time to bring back its window; it did nothing then\n  ([#5](https://github.com/RustWTM/RustWTM/issues/5))."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-22T19:37:20.352Z",
-  "contentHash": "4e6b2182426f847f9df4067eeba0f5a51aef056e0a5d585e2d000e24d71a6ebc"
+  "checkedAt": "2026-11-22T21:36:26.810Z",
+  "contentHash": "8d7a10080f2cc18d467b896acb0e70318159ea62b65a75863ce2419fc8d09db4"
 }
