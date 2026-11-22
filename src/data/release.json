@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "39b0930d68830b32d0b785065328c3b9344c3158",
+    "sha": "b112a874519020d889c0a643caf45763a605ff00",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "### Fixed\n\n- Closing RustWTM while it is minimized, for example from the taskbar,\n  keeps it running in the tray as the close button does. It quit\n  instead."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-22T22:13:13.545Z",
-  "contentHash": "bc0913f21cbb2d0c032c03ad1e80bbed7da77486cc0a7183371d2d16fe53a60a"
+  "checkedAt": "2026-11-22T22:29:59.051Z",
+  "contentHash": "d97f559c0a18eb11f9b23c43c2a34dbaacbc20bdf37365e43f007d964ff9b7a4"
 }
