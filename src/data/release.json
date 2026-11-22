@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "62891dbaca46169db31ecab9bfbd0e219bead21f",
+    "sha": "bf17bf73353a67951c285c607aa42f6b8c0c12a7",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "### Changed\n\n- When the window loses the RustWTM service it works locally until the\n  service is back, and no longer shows the previous service's\n  configuration, kill list, Telegram settings, recorded history or\n  incident replay. They are loaded again from the service it reconnects\n  to; unsaved Telegram edits are discarded then.\n- Switching the service to monitoring ends software fan control at once\n  and asks the hardware for its defaults. Apply the fan profile again\n  after switching back to enforcing.\n\n### Fixed\n\n- A Telegram save or test message started before the connection to the\n  service changed is no longer sent to the service that answers now.\n- `wtm` and the window say which side to update when the installed\n  service speaks another protocol version: the installed package when\n  the service is older, `wtm.exe` from the service's release when it is\n  newer.\n- Sizes such as `1.5G` are computed exactly instead of in floating point,\n  and a size larger than the maximum byte count is refused instead of\n  being cut down to it.\n- A failed sensor reading no longer leaves the previous readings and\n  cooling state shown as current. A fan whose channel disappears or is\n  no longer eligible goes back to hardware automatic.\n- The hardware helper is started again when it answers a reading without\n  a report. When a fan channel reports a different control, the previous\n  control is given back to the hardware before the new one is driven.\n  On shutdown a failed fan restore is tried once more, and the helper\n  exits with an error if a fan is still under software control.\n- App power keeps a power plan restore pending while the active plan\n  cannot be read, instead of restoring without knowing whether you chose\n  another plan; a request that fails to switch keeps the previous one in\n  force and named; and a new request is served while a plan you chose\n  is kept.\n- Core placement keeps a failed restore and retries it on the next pass\n  instead of forgetting it, and when an update fails it keeps the record\n  of the last placement that worked, so that one is still given back.\n- The file locks page and incident replay no longer show a late result\n  for an earlier path or an earlier service connection.\n- `install.ps1` stops when it cannot remove the previous version's\n  directory instead of copying over it, and `uninstall.ps1` removes the\n  service's executable and itself last, so a removal that fails half way\n  can be run again."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-20T20:22:25.552Z",
-  "contentHash": "57bf6563e5c38d34625c2093eee4afc288ec9ba3c2de135afe4b68401a559922"
+  "checkedAt": "2026-11-22T17:52:31.758Z",
+  "contentHash": "0c9aaa0b1bd6ad7596c544c5e76469d0f6e8e06835728074d3d52ffb4063b09d"
 }
