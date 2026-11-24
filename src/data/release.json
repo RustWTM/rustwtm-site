@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "1c1064e756061aff86e8aa794435131a27d410b3",
+    "sha": "37efca1da036d8bd65c4eb151cecb0bd24f53580",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "### Added\n\n- The CPU history graph shows the process that used the most CPU at the\n  hovered or selected measurement when process data is available\n  ([#4](https://github.com/RustWTM/RustWTM/issues/4))."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-24T10:39:57.922Z",
-  "contentHash": "20b6a2e11d354dd3f7f9ad4706439f1de6cd0386d3320633bf4d287cf6ca757b"
+  "checkedAt": "2026-11-24T19:17:42.001Z",
+  "contentHash": "fc6bb7d9eec0d2b0b10915db7d31f614ad0a7a4cd430b6ec25a6271d5edcf5d2"
 }
