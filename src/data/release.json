@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "49739d4f761791169fac780d913edb9d9aa975d6",
+    "sha": "1c1064e756061aff86e8aa794435131a27d410b3",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": "### Added\n\n- An **OLED** theme next to System, Light and Dark. It uses true-black\n  surfaces, near-black controls and no flyout shadows while keeping the\n  resource palette and brand accent unchanged.\n\n### Fixed\n\n- The CPU alert counts a high load, and the calm time before it closes\n  by itself, from the start again after a gap in monitoring or a switch\n  between local and service sampling; a stricter threshold restarts the\n  count too. A repeated reading of the same sample no longer counts toward\n  the alert.\n- The global show / hide shortcut brings back a minimized RustWTM window\n  instead of hiding it, and leaves the window above others only while\n  Always on top is on. A shortcut press while RustWTM closes is ignored.\n- Opening RustWTM right after it started in the tray, for example with\n  a second start, keeps the window open. It could hide again at once.\n- Closing, snoozing or holding a CPU alert acts only on the alert that\n  was shown. A click that arrived just as the alert closed by itself could\n  close or hold the next alert instead."
+    "unreleased": "## v0.40.0 — In development\n\n[Release scope and validation](docs/0.40.0-review.md)\n\nAn OLED theme, steadier CPU and container alerts, and a show / hide\nshortcut that restores a minimized window.\n\n### Added\n\n- An **OLED** theme next to System, Light and Dark. It uses true-black\n  surfaces, near-black controls and no flyout shadows while keeping the\n  resource palette and brand accent unchanged.\n\n### Fixed\n\n- The CPU alert counts a high load, and the calm time before it closes\n  by itself, from the start again after a gap in monitoring or a switch\n  between local and service sampling; a stricter threshold restarts the\n  count too. A repeated reading of the same sample no longer counts toward\n  the alert.\n- The global show / hide shortcut brings back a minimized RustWTM window\n  instead of hiding it, and leaves the window above others only while\n  Always on top is on. A shortcut press while RustWTM closes is ignored.\n- Opening RustWTM right after it started in the tray, for example with\n  a second start, keeps the window open. It could hide again at once.\n- Closing, snoozing or holding a CPU alert acts only on the alert that\n  was shown. A click that arrived just as the alert closed by itself could\n  close or hold the next alert instead.\n- Container alerts count a high load from the start again when a\n  container was missing from a partial Docker listing, after container\n  alerts were turned off and on, or after RustWTM switched to another\n  Docker endpoint with the same context name. A changed CPU or memory\n  limit restarts only that resource's count."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-24T08:48:49.020Z",
-  "contentHash": "615136d0bd8c4bcc9ccbdd350b5bbc15cf67332206e8ccbe292cb62e7ac949c4"
+  "checkedAt": "2026-11-24T10:00:59.673Z",
+  "contentHash": "9f0f299fcb7217c2e0ad8d261d527e260d1fef86925d9a6c89eb6d2cd0f4366a"
 }
