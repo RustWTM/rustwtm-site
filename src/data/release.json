@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "e198b3600738141e3d6a122a928dcda4e727a03b",
+    "sha": "68552b3a5258d818d281659186b52f00006000c3",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.41.1 — In development\n\n[Release scope and validation](docs/0.41.1-review.md)\n\nFifty reliability, numeric-sanitization, overflow-safety, and policy/UI\nhardening fixes across all workspace crates.\n\n### Fixed\n\n- **Non-finite and negative metric sanitization**: Guarded CPU, GPU, disk,\n  network, I/O, sensor, and rate calculations and display formatting\n  against `NaN`, `Infinity`, and negative values across `wtm-core`,\n  `wtm-sys`, `wtm-policy`, `wtm-ipc`, `wtm-service`, `wtm-cli`, `wtm-ai`,\n  and `wtm-gui` (including incident frames, IPC `SystemPoint`, Telegram\n  reports, AI tool summaries, CLI tables, service history series,\n  governor/reserve/kill/game-mode ticks, overview, resource strip,\n  device history, and container history).\n- **Integer overflow and boundary safety**: Replaced unchecked `u64` /\n  `u32` / `Duration` arithmetic with saturating or checked operations in\n  process sampling, disk scan assembly, memory composition/map totals,\n  thread CPU totals, job accounting, and startup/port/Docker parsing.\n- **Policy, redaction, and UI correctness**: Fixed rule/insight edge\n  cases, AI redaction and support-bundle handling, i18n/theme/alert\n  behaviors, and service limit/history/Telegram edge cases."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-24T21:36:04.612Z",
-  "contentHash": "e392aa096d62c04a41a0b940f971cc0abbe8f94d811ea6beab59bb8e646f763c"
+  "checkedAt": "2026-11-26T23:47:46.807Z",
+  "contentHash": "50d2b52afddd2226827ce062482f7472e7808ba0cccc050692be58feffbc34e9"
 }
