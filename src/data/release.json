@@ -187,9 +187,9 @@
     }
   ],
   "changelog": {
-    "sha": "68552b3a5258d818d281659186b52f00006000c3",
+    "sha": "9727fe816fcb590dcb90494c0617f3d4cb5c2a92",
     "url": "https://github.com/RustWTM/RustWTM/blob/main/CHANGELOG.md",
-    "unreleased": ""
+    "unreleased": "## v0.41.2 — In development\n\n[Release scope and validation](docs/0.41.2-review.md)\n\nAdds the System Toolkit workspace (Risk Scan, Disk Cleanup, RAM Cleaner,\nScheduled Tasks, reversible Windows Tweaks, and Repair & Network with live\nadapter IP/DNS inspection), CLI counterparts, and visual upgrades across\nInstalled Apps, Overview, Services, Startup, Users, Network, Ports,\nContainers, and Events.\n\n### Added\n\n- **System Toolkit (`Toolkit` tab & CLI)**:\n  - **Risk Scan & Quarantine**: Contextual risk heuristics (system-process\n    masquerading, unsigned binaries in high-risk folders, double-extension\n    files, non-Microsoft scheduled tasks, and security policy checks),\n    on-demand Microsoft Defender file & quick scans (`MpCmdRun.exe`),\n    quarantine flow, and right-click Defender scan from `Processes`.\n  - **Safe Disk Cleanup**: Dry-run size scan and categorized cleanup (Temp,\n    CBS/DISM/WindowsUpdate logs, GPU shader caches, Explorer thumbnails,\n    browser caches, developer caches, and Recycle Bin via `wtm-sys`) with\n    reparse-point and file-age guards.\n  - **RAM Cleaner**: System-wide working-set trimming with live RAM ring\n    gauge, sparkline, Before/After/Freed comparison cards, and per-process\n    memory reduction breakdown.\n  - **Scheduled Tasks**: Filterable, sortable Windows Task Scheduler view\n    with enable/disable switches.\n  - **Reversible Windows Tweaks**: Curated privacy, ads/AI, performance,\n    appearance, and Edge tweaks with Windows 10/11 filtering, JSON backup\n    and rollback, and one-click recommended/revert actions.\n  - **Repair & Network**: Live network adapter & IP/DHCP/DNS inspector,\n    Flush DNS, Renew DHCP IP, Network Reset, Time Sync, SFC/DISM, DNS\n    profile switcher, and System Restore Point creation.\n  - **CLI**: `wtm clean [--apply] [--ram]`, `wtm risk scan|defender`,\n    `wtm tasks list|enable|disable`, `wtm tweaks list|apply|undo`, and\n    `wtm repair net-info|flush-dns|renew-ip|sfc|dism|net-reset|time-sync|dns|restore-point`.\n  - **Locale validation**: Added `scripts/ci/check-locales.py`.\n\n### Changed\n\n- **Installed Apps (`Desktop apps`, `Store apps`, `Package updates`)**:\n  Replaced flat lists and collapsing headers with sortable full-width\n  tables, summary counters, proportional size bars, bloatware filtering,\n  direct Store package removal (`Remove-AppxPackage`), and switches.\n- **Consistent visual badges**: Added shared `theme::pill` badges across\n  `Overview`, `Toolkit`, `Users`, `Services`, `Startup apps`, `Network`,\n  `Ports`, `Containers`, and `Events`."
   },
   "presentation": {
     "schemaVersion": 1,
@@ -607,6 +607,6 @@
       }
     ]
   },
-  "checkedAt": "2026-11-27T00:00:55.953Z",
-  "contentHash": "73c8b99f33f73f5d5fffd37412f0ad72cddfd354b1b39da77a380682202e9a31"
+  "checkedAt": "2026-11-27T18:07:53.719Z",
+  "contentHash": "5121f879312310e0f5f248e327ecae19919496b2591c0d5bab8caeeba945a73a"
 }
